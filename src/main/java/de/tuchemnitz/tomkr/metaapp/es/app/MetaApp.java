@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp;
+package de.tuchemnitz.tomkr.metaapp.es.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,12 +8,12 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfigurat
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-public class MetaAppJavaApplication {
+public class MetaApp {
 
-	private static Logger LOG = LoggerFactory.getLogger(MetaAppJavaApplication.class);
+	private static Logger LOG = LoggerFactory.getLogger(MetaApp.class);
 	
 	public static void main(String[] args) {
-		SpringApplication.run(MetaAppJavaApplication.class, args);
+		SpringApplication.run(MetaApp.class, args);
 		LOG.debug("Started Application");
 	}
 }

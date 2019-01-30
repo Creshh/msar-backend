@@ -18,8 +18,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import de.tuchemnitz.tomkr.metaapp.es.MetaFile;
-import de.tuchemnitz.tomkr.metaapp.es.MetaService;
+import de.tuchemnitz.tomkr.metaapp.es.service.MetaService;
+import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

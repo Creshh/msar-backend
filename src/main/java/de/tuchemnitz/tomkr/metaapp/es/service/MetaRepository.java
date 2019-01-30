@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es;
+package de.tuchemnitz.tomkr.metaapp.es.service;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+
+import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
 
 
 public interface MetaRepository extends ElasticsearchRepository<MetaFile, String>{
