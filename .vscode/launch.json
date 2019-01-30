@@ -16,6 +16,16 @@
             "mainClass": "de.tuchemnitz.tomkr.metaapp.DemoApplication",
             "projectName": "metaapp",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MetaApp<metaapp>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "de.tuchemnitz.tomkr.metaapp.es.app.MetaApp",
+            "projectName": "metaapp",
+            "args": ""
         }
     ]
 }
