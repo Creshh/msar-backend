@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
 
 @Service
-public class MetaService {
+public class MetaElasticService {
 
 	@Autowired
 	public MetaRepository metaRepository;

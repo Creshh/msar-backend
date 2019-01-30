@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - MetaApp",
+            "request": "launch",
+            "mainClass": "de.tuchemnitz.tomkr.metaapp.es.MetaApp",
+            "projectName": "metaapp"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - MetaAppJavaApplication",
             "request": "launch",
             "mainClass": "de.tuchemnitz.tomkr.metaapp.MetaAppJavaApplication",
