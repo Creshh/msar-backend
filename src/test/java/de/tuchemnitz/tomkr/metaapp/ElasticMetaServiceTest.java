@@ -24,9 +24,9 @@ import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MetaAppJavaApplicationTests {
+public class ElasticMetaServiceTest {
 
-	private static Logger LOG = LoggerFactory.getLogger(MetaAppJavaApplicationTests.class);
+	private static Logger LOG = LoggerFactory.getLogger(ElasticMetaServiceTest.class);
 
 	@Autowired
 	private MetaService metaService;
