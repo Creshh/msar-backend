@@ -1,6 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
+package de.tuchemnitz.tomkr.metaapp.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -18,6 +16,4 @@ public class MetaFile {
 	@Id
 	private String fileName;
 	private String location;
-
-
 }

@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp;
+package de.tuchemnitz.tomkr.metaapp.es.app;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

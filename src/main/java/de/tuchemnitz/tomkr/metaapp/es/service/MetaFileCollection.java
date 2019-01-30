@@ -1,13 +1,14 @@
-package de.tuchemnitz.tomkr.metaapp.graph;
+package de.tuchemnitz.tomkr.metaapp.es.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.metaapp.es.MetaFile;
+import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
 
 @Service
 @Scope("singleton")
