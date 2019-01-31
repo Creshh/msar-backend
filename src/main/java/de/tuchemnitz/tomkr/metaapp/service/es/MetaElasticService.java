@@ -13,7 +13,7 @@ import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
 public class MetaElasticService {
 
 	@Autowired
-	public MetaRepository metaRepository;
+	private MetaRepository metaRepository;
 
 	public MetaFile save(MetaFile metaFile) {
 		return metaRepository.save(metaFile);

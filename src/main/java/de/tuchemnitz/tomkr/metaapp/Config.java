@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.config;
+package de.tuchemnitz.tomkr.metaapp;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.metapp.service.es")
-public class ESConfig {
+@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.metaapp.service.es")
+@EnableMongoRepositories(basePackages = "de.tuchemnitz.tomkr.metaapp.service.mongo")
+public class Config {
 
 	@Value("${elasticsearch.host}")
 	public String host;
