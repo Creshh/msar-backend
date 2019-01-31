@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es.service;
+package de.tuchemnitz.tomkr.metaapp.service.es;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es;
+package de.tuchemnitz.tomkr.metaapp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
