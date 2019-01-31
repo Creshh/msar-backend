@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es.config;
+package de.tuchemnitz.tomkr.metaapp.config;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.metapp.es")
+@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.metapp.service.es")
 public class ESConfig {
 
 	@Value("${elasticsearch.host}")

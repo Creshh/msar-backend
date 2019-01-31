@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es.service;
+package de.tuchemnitz.tomkr.metaapp.service.graphql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
+import de.tuchemnitz.tomkr.metaapp.service.es.MetaElasticService;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;

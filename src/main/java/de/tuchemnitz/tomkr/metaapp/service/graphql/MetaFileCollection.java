@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp.es.service;
+package de.tuchemnitz.tomkr.metaapp.service.graphql;
 
 import java.util.ArrayList;
 import java.util.List;
