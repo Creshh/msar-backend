@@ -15,3 +15,7 @@ MetaApp:
 - Sync zur Elastic Instanz
 - Suche über Elastic Instanz über simples Frontend
 - automatische Metadatenerzeugung und Hinzufügen über API ermöglichen -> subscriber Modell, sodass Docker Instanzen die Daten generieren
+
+
+Kein Spring data nutzen, da sonst struktur der daten als Klassen vorgegeben werden muss.
+http://mongodb.github.io/mongo-java-driver/3.9/driver/getting-started/quick-start/
