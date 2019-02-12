@@ -1,0 +1,14 @@
+
+assetReference
+cts
+mts
+List<
+
+
+
+
+
+List<Wert>
+	Wert
+		Key - String
+		Value - String
