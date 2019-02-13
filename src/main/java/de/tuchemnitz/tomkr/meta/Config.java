@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.metaapp;
+package de.tuchemnitz.tomkr.meta;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz")
+@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.tomkr.meta")
 //@EnableMongoRepositories(basePackages = "de.tuchemnitz.tomkr.metaapp.service.mongo")
 public class Config {
 

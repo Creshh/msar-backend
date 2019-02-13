@@ -1,15 +1,29 @@
 package de.tuchemnitz.tomkr.meta.model;
 
-import lombok.Data;
+import java.lang.reflect.Type;
 
-@Data
-public class MetaObject <K extends Comparable<K>, V>{
-	
-		private MetaObject<K, V> child;
-		private MetaObject<K, V> parent;
-		private boolean color;
+public class MetaObject extends AbstractNode{
 
-		private K key;
-		private V value;
-
+		private Type type;
+		private Object value;
+		
+		
+		public MetaObject() {
+			super();
+		}
+		
+		public Type getType() {
+			return type;
+		}
+		public void setType(Type type) {
+			this.type = type;
+		}
+		public Object getValue() {
+			return value;
+		}
+		public void setValue(Object value) {
+			this.value = value;
+		}
+		
+		
 }
