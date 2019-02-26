@@ -1,0 +1,36 @@
+{
+	"$id": "https://tu-chemnitz.de/tomkr.meta.metadata",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Metadata",
+	"description": "Abstract metadata header for assets like images, videos, etc.",
+	"javaType": "de.tuchemnitz.tomkr.meta.codegen.gen.MetaData",
+	"type": "object",
+	"properties": {
+		"reference": {
+			"description": "Absolute path to the referred asset (image, video, etc.)",
+			"type": "string",
+			"required": true
+		},
+		"type": {
+			"description": "Type of the included metadata values",
+			"enum": [
+				"exif",
+				"location",
+				"objects"
+			],
+			"required": true
+		},
+		"source": {
+			"description": "Source of the metadata values; e.g. framework name and version",
+			"type": "string"
+		},
+		"raw": {
+			"description": "Free text field for storing raw and additional data",
+			"type": "string"
+		},
+		"tags": {
+			"description": "Automatically generated search tags; will concatenate fields marked with tag true",
+			"type": "string"
+		}
+	}
+}
