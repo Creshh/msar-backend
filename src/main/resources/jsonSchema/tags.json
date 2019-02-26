@@ -1,0 +1,28 @@
+{
+	"$id": "https://tu-chemnitz.de/tomkr.meta.objects",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Tags",
+	"description": "Tags in key value format; may be objects in scene",
+	"type": "object",
+	"extends": {
+		"$ref": "metaData.json"
+	},
+	"properties": {
+		"tags": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"key": {
+						"type": "string",
+						"description": "Key describing the type of the tag; may be object, errorclass etc."
+					},
+					"value": {
+						"type": "string",
+						"description": "Value for the tag corresponding to the defined type"
+					}
+				}
+			}
+		}
+	}
+}

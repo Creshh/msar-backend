@@ -15,15 +15,15 @@
 			"type": "integer"
 		},
 		"country": {
-			"tag": true,
+			"desc": true,
 			"type": "string"
 		},
 		"city": {
-			"tag": true,
+			"desc": true,
 			"type": "string"
 		},
 		"street": {
-			"tag": true,
+			"desc": true,
 			"type": "string"
 		},
 		"number": {
