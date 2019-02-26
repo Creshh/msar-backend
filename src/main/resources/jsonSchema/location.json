@@ -1,0 +1,33 @@
+{
+	"$id": "https://tu-chemnitz.de/tomkr.meta.location",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Location",
+	"description": "Location data in address and/or coordinate format",
+	"type": "object",
+	"extends": {
+		"$ref": "metaData.json"
+	},
+	"properties": {
+		"latitude": {
+			"type": "integer"
+		},
+		"longitude": {
+			"type": "integer"
+		},
+		"country": {
+			"tag": true,
+			"type": "string"
+		},
+		"city": {
+			"tag": true,
+			"type": "string"
+		},
+		"street": {
+			"tag": true,
+			"type": "string"
+		},
+		"number": {
+			"type": "string"
+		}
+	}
+}
