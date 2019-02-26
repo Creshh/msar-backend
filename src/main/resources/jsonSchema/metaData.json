@@ -3,7 +3,7 @@
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"title": "Metadata",
 	"description": "Abstract metadata header for assets like images, videos, etc.",
-	"javaType": "de.tuchemnitz.tomkr.meta.codegen.gen.MetaData",
+	"javaType": "de.tuchemnitz.tomkr.msar.model.MetaData",
 	"type": "object",
 	"properties": {
 		"reference": {
@@ -28,8 +28,8 @@
 			"description": "Free text field for storing raw and additional data",
 			"type": "string"
 		},
-		"tags": {
-			"description": "Automatically generated search tags; will concatenate fields marked with tag true",
+		"description": {
+			"description": "Automatically generated searcheable description; will concatenate fields marked with desc true",
 			"type": "string"
 		}
 	}
