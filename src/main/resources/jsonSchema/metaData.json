@@ -6,6 +6,10 @@
 	"javaType": "de.tuchemnitz.tomkr.msar.model.MetaData",
 	"type": "object",
 	"properties": {
+		"id": {
+			"description": "Automatically generated id",
+			"type": "number"
+		},
 		"reference": {
 			"description": "Absolute path to the referred asset (image, video, etc.)",
 			"type": "string",

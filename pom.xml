@@ -59,6 +59,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>2.2.10</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -95,7 +100,7 @@
 					<includeAdditionalProperties>false</includeAdditionalProperties>
 					<outputDirectory>${project.basedir}/src/gen/java</outputDirectory>
 					<customAnnotator>de.tuchemnitz.tomkr.msar.jsonannotator.SpringDataAnnotator</customAnnotator>
-					
+
 				</configuration>
 				<executions>
 					<execution>

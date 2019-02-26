@@ -1,0 +1,13 @@
+{
+	"reference": "/path/to/file",
+	"type": "location",
+	"source": "user",
+	"raw": "",
+	"description": "",
+	"latitude": 50.23423,
+	"longitude": 24.65444,
+	"country": "Germany",
+	"city": "Dresden",
+	"street": "Prager Straﬂe",
+	"number": "43b"
+}
