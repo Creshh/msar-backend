@@ -1,0 +1,874 @@
+{
+    "took": 76,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 1,
+        "max_score": 1.0,
+        "hits": [{
+            "_index": "meta",
+            "_type": "Asset",
+            "_id": "ref",
+            "_score": 1.0,
+            "_source": {
+                "metaData": {
+                    "openpose": {
+                        "metaData": {
+                            "version": {
+                                "metaData": {},
+                                "value": 1.1
+                            },
+                            "people": {
+                                "metaData": {
+                                    "listElement00001": {
+                                        "metaData": {
+                                            "face_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            },
+                                            "pose_keypoints": {
+                                                "metaData": {},
+                                                "value": [0, 0, 0, 552.301, 26.5959, 0.562126, 544.56, 6.97471, 0.158028, 0, 0, 0, 0, 0, 0, 536.731, 73.7931, 0.468227, 536.726, 201.904, 0.791671, 0, 0, 0, 656.948, 178.439, 0.508117, 573.133, 199.341, 0.0949734, 596.918, 280.318, 0.305683, 615.086, 209.732, 0.454412, 552.302, 220.212, 0.101646, 602.058, 290.843, 0.53328, 0, 0, 0, 0, 0, 0, 0, 0, 0, 458.183, 6.99997, 0.0958631]
+                                            },
+                                            "hand_left_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            },
+                                            "hand_right_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            }
+                                        },
+                                        "value": null
+                                    },
+                                    "listElement00000": {
+                                        "metaData": {
+                                            "face_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            },
+                                            "pose_keypoints": {
+                                                "metaData": {},
+                                                "value": [112.965, 303.992, 0.907761, 131.303, 382.338, 0.590599, 162.662, 418.963, 0.495944, 290.846, 364.097, 0.790765, 327.495, 259.519, 0.838549, 99.9215, 361.449, 0.317454, 0, 0, 0, 0, 0, 0, 309.149, 432.079, 0.295561, 418.971, 296.052, 0.190805, 0, 0, 0, 319.618, 424.222, 0.143306, 0, 0, 0, 0, 0, 0, 94.6696, 314.319, 0.821354, 92.0901, 301.181, 0.206131, 86.8547, 366.694, 0.732127, 0, 0, 0]
+                                            },
+                                            "hand_left_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            },
+                                            "hand_right_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            }
+                                        },
+                                        "value": null
+                                    },
+                                    "listElement00002": {
+                                        "metaData": {
+                                            "face_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            },
+                                            "pose_keypoints": {
+                                                "metaData": {},
+                                                "value": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 118.207, 327.511, 0.31439, 157.458, 309.144, 0.682695, 209.694, 288.24, 0.767746, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                                            },
+                                            "hand_left_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            },
+                                            "hand_right_keypoints": {
+                                                "metaData": {},
+                                                "value": null
+                                            }
+                                        },
+                                        "value": null
+                                    }
+                                },
+                                "value": null
+                            }
+                        },
+                        "value": null
+                    },
+                    "detectron": {
+                        "metaData": {
+                            "listElement00001": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [466.255066, 0.0, 672.675964, 506.27478]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 0
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.998398
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00023": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [0.0, 418.081512, 51.467255, 515.899536]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 22
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.171672
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "handbag"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00000": {
+                                "metaData": {
+                                    "framenr": {
+                                        "metaData": {},
+                                        "value": 6
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00022": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [889.159912, 62.918339, 1035.870728, 152.345001]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 21
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.062694
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "umbrella"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00021": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [1.064558, 419.447784, 51.614105, 519.175781]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 20
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.191373
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "backpack"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00020": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [891.636414, 64.45697, 1032.9552, 145.474518]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 19
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.063473
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "bird"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00005": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [2.112289, 609.618652, 145.174423, 765.428955]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 4
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.977347
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00027": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [1.469944, 134.401306, 102.307068, 324.647827]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 26
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.864023
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00004": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [6.69799, 3.261566, 215.726196, 271.341827]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 3
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.997218
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00026": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [596.855286, 117.568535, 611.063538, 165.140503]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 25
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.087565
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "tie"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00003": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [889.393494, 55.656559, 1037.556885, 144.91687]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 2
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.293487
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00025": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [54.462536, 1.329758, 81.952415, 54.612484]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 24
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.213696
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "tie"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00002": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [107.74202, 2.724457, 249.779282, 153.427414]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 1
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.996744
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00024": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [57.875755, 3.693431, 75.452766, 33.144096]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 23
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.053599
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "tie"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00009": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [3.077545, 85.973511, 153.500992, 395.38205]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 8
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.194893
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00008": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [0.0, 250.513611, 154.100586, 764.717407]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 7
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.205086
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00007": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [0.0, 265.929657, 158.044312, 517.030396]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 6
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.984507
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00029": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [895.525146, 160.932343, 1114.687988, 305.347015]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 28
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.544151
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00006": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [177.469101, 2.389675, 236.397629, 89.903275]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 5
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.206787
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00028": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [874.55542, 31.167358, 1034.643921, 174.402298]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 27
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.973045
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00012": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [1077.861694, 429.115479, 1237.505493, 666.827759]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 11
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.178877
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "traffic light"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00034": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [629.78064, 119.544998, 883.756958, 463.42926]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 33
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.229905
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00011": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [609.049988, 43.051323, 817.732849, 210.002472]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 10
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.095682
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "car"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00033": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [618.117615, 225.928024, 761.413025, 333.668762]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 32
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.135146
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00010": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [1.377472, 246.519745, 73.216034, 518.526367]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 9
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.065416
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "person"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00032": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [617.149292, 220.192444, 816.162476, 470.742737]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 31
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.658653
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00031": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [0.437286, 168.391815, 63.324913, 349.203339]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 30
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.101426
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00016": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [1.871849, 127.196602, 117.734833, 322.392761]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 15
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.163286
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "bench"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00015": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [765.393677, 106.497002, 872.369995, 256.938293]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 14
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.101526
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "parking meter"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00014": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [993.269714, 289.094055, 1251.748779, 774.709412]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 13
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.067738
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "traffic light"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00036": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [860.551086, 23.607872, 1062.438477, 256.334259]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 35
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.381641
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00013": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [936.31134, 447.569824, 1216.033813, 839.314453]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 12
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.316362
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "traffic light"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00035": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [926.700989, 189.230377, 1101.629517, 358.79715]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 34
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.146375
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00019": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [957.72699, 229.54982, 1072.219604, 330.747681]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 18
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.191587
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "bird"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00018": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [0.705842, 547.918823, 30.942364, 599.985718]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 17
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.056989
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "bench"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00017": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [460.702057, 30.865829, 894.24292, 206.608871]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 16
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.069726
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "bench"
+                                    }
+                                },
+                                "value": null
+                            },
+                            "listElement00030": {
+                                "metaData": {
+                                    "elementposition": {
+                                        "metaData": {},
+                                        "value": [876.286865, 63.193329, 1124.976074, 357.962067]
+                                    },
+                                    "boxnr": {
+                                        "metaData": {},
+                                        "value": 29
+                                    },
+                                    "confidence": {
+                                        "metaData": {},
+                                        "value": 0.057698
+                                    },
+                                    "elementtyp": {
+                                        "metaData": {},
+                                        "value": "chair"
+                                    }
+                                },
+                                "value": null
+                            }
+                        },
+                        "value": null
+                    }
+                },
+                "reference": "ref",
+                "cts": 0,
+                "mts": 0
+            }
+        }]
+    }
+}
