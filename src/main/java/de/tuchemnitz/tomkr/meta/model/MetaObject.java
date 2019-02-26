@@ -1,10 +1,12 @@
 package de.tuchemnitz.tomkr.meta.model;
 
-import java.lang.reflect.Type;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 
+@Document(indexName = "meta")
 public class MetaObject extends AbstractNode{
 
-		private Type type;
+		@Field(store = true, copyTo = "allFields")
 		private Object value;
 		
 		
@@ -12,12 +14,6 @@ public class MetaObject extends AbstractNode{
 			super();
 		}
 		
-		public Type getType() {
-			return type;
-		}
-		public void setType(Type type) {
-			this.type = type;
-		}
 		public Object getValue() {
 			return value;
 		}
@@ -25,5 +21,6 @@ public class MetaObject extends AbstractNode{
 			this.value = value;
 		}
 		
-		
+		// specify schema / keys which should be handled as tags; extract the value from these keys to a tag field in the asset; for filter mechanism, provide an overview about the 
+		// available keys and let choose
 }

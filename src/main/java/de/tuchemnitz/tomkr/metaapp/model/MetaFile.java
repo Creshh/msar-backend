@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(indexName = "metaapp", type = "metafile")
-@org.springframework.data.mongodb.core.mapping.Document
 public class MetaFile {
 	
 	@Id

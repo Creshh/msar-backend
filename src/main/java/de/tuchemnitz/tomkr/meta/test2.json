@@ -1,0 +1,401 @@
+[
+    {
+        "framenr": 6
+    }, 
+    {
+        "boxnr": 0, 
+        "confidence": 0.998398, 
+        "elementtyp": "person", 
+        "elementposition": [
+            466.255066, 
+            0.000000, 
+            672.675964, 
+            506.274780
+        ]
+    }, 
+    {
+        "boxnr": 1, 
+        "confidence": 0.996744, 
+        "elementtyp": "person", 
+        "elementposition": [
+            107.742020, 
+            2.724457, 
+            249.779282, 
+            153.427414
+        ]
+    }, 
+    {
+        "boxnr": 2, 
+        "confidence": 0.293487, 
+        "elementtyp": "person", 
+        "elementposition": [
+            889.393494, 
+            55.656559, 
+            1037.556885, 
+            144.916870
+        ]
+    }, 
+    {
+        "boxnr": 3, 
+        "confidence": 0.997218, 
+        "elementtyp": "person", 
+        "elementposition": [
+            6.697990, 
+            3.261566, 
+            215.726196, 
+            271.341827
+        ]
+    }, 
+    {
+        "boxnr": 4, 
+        "confidence": 0.977347, 
+        "elementtyp": "person", 
+        "elementposition": [
+            2.112289, 
+            609.618652, 
+            145.174423, 
+            765.428955
+        ]
+    }, 
+    {
+        "boxnr": 5, 
+        "confidence": 0.206787, 
+        "elementtyp": "person", 
+        "elementposition": [
+            177.469101, 
+            2.389675, 
+            236.397629, 
+            89.903275
+        ]
+    }, 
+    {
+        "boxnr": 6, 
+        "confidence": 0.984507, 
+        "elementtyp": "person", 
+        "elementposition": [
+            0.000000, 
+            265.929657, 
+            158.044312, 
+            517.030396
+        ]
+    }, 
+    {
+        "boxnr": 7, 
+        "confidence": 0.205086, 
+        "elementtyp": "person", 
+        "elementposition": [
+            0.000000, 
+            250.513611, 
+            154.100586, 
+            764.717407
+        ]
+    }, 
+    {
+        "boxnr": 8, 
+        "confidence": 0.194893, 
+        "elementtyp": "person", 
+        "elementposition": [
+            3.077545, 
+            85.973511, 
+            153.500992, 
+            395.382050
+        ]
+    }, 
+    {
+        "boxnr": 9, 
+        "confidence": 0.065416, 
+        "elementtyp": "person", 
+        "elementposition": [
+            1.377472, 
+            246.519745, 
+            73.216034, 
+            518.526367
+        ]
+    }, 
+    {
+        "boxnr": 10, 
+        "confidence": 0.095682, 
+        "elementtyp": "car", 
+        "elementposition": [
+            609.049988, 
+            43.051323, 
+            817.732849, 
+            210.002472
+        ]
+    }, 
+    {
+        "boxnr": 11, 
+        "confidence": 0.178877, 
+        "elementtyp": "traffic light", 
+        "elementposition": [
+            1077.861694, 
+            429.115479, 
+            1237.505493, 
+            666.827759
+        ]
+    }, 
+    {
+        "boxnr": 12, 
+        "confidence": 0.316362, 
+        "elementtyp": "traffic light", 
+        "elementposition": [
+            936.311340, 
+            447.569824, 
+            1216.033813, 
+            839.314453
+        ]
+    }, 
+    {
+        "boxnr": 13, 
+        "confidence": 0.067738, 
+        "elementtyp": "traffic light", 
+        "elementposition": [
+            993.269714, 
+            289.094055, 
+            1251.748779, 
+            774.709412
+        ]
+    }, 
+    {
+        "boxnr": 14, 
+        "confidence": 0.101526, 
+        "elementtyp": "parking meter", 
+        "elementposition": [
+            765.393677, 
+            106.497002, 
+            872.369995, 
+            256.938293
+        ]
+    }, 
+    {
+        "boxnr": 15, 
+        "confidence": 0.163286, 
+        "elementtyp": "bench", 
+        "elementposition": [
+            1.871849, 
+            127.196602, 
+            117.734833, 
+            322.392761
+        ]
+    }, 
+    {
+        "boxnr": 16, 
+        "confidence": 0.069726, 
+        "elementtyp": "bench", 
+        "elementposition": [
+            460.702057, 
+            30.865829, 
+            894.242920, 
+            206.608871
+        ]
+    }, 
+    {
+        "boxnr": 17, 
+        "confidence": 0.056989, 
+        "elementtyp": "bench", 
+        "elementposition": [
+            0.705842, 
+            547.918823, 
+            30.942364, 
+            599.985718
+        ]
+    }, 
+    {
+        "boxnr": 18, 
+        "confidence": 0.191587, 
+        "elementtyp": "bird", 
+        "elementposition": [
+            957.726990, 
+            229.549820, 
+            1072.219604, 
+            330.747681
+        ]
+    }, 
+    {
+        "boxnr": 19, 
+        "confidence": 0.063473, 
+        "elementtyp": "bird", 
+        "elementposition": [
+            891.636414, 
+            64.456970, 
+            1032.955200, 
+            145.474518
+        ]
+    }, 
+    {
+        "boxnr": 20, 
+        "confidence": 0.191373, 
+        "elementtyp": "backpack", 
+        "elementposition": [
+            1.064558, 
+            419.447784, 
+            51.614105, 
+            519.175781
+        ]
+    }, 
+    {
+        "boxnr": 21, 
+        "confidence": 0.062694, 
+        "elementtyp": "umbrella", 
+        "elementposition": [
+            889.159912, 
+            62.918339, 
+            1035.870728, 
+            152.345001
+        ]
+    }, 
+    {
+        "boxnr": 22, 
+        "confidence": 0.171672, 
+        "elementtyp": "handbag", 
+        "elementposition": [
+            0.000000, 
+            418.081512, 
+            51.467255, 
+            515.899536
+        ]
+    }, 
+    {
+        "boxnr": 23, 
+        "confidence": 0.053599, 
+        "elementtyp": "tie", 
+        "elementposition": [
+            57.875755, 
+            3.693431, 
+            75.452766, 
+            33.144096
+        ]
+    }, 
+    {
+        "boxnr": 24, 
+        "confidence": 0.213696, 
+        "elementtyp": "tie", 
+        "elementposition": [
+            54.462536, 
+            1.329758, 
+            81.952415, 
+            54.612484
+        ]
+    }, 
+    {
+        "boxnr": 25, 
+        "confidence": 0.087565, 
+        "elementtyp": "tie", 
+        "elementposition": [
+            596.855286, 
+            117.568535, 
+            611.063538, 
+            165.140503
+        ]
+    }, 
+    {
+        "boxnr": 26, 
+        "confidence": 0.864023, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            1.469944, 
+            134.401306, 
+            102.307068, 
+            324.647827
+        ]
+    }, 
+    {
+        "boxnr": 27, 
+        "confidence": 0.973045, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            874.555420, 
+            31.167358, 
+            1034.643921, 
+            174.402298
+        ]
+    }, 
+    {
+        "boxnr": 28, 
+        "confidence": 0.544151, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            895.525146, 
+            160.932343, 
+            1114.687988, 
+            305.347015
+        ]
+    }, 
+    {
+        "boxnr": 29, 
+        "confidence": 0.057698, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            876.286865, 
+            63.193329, 
+            1124.976074, 
+            357.962067
+        ]
+    }, 
+    {
+        "boxnr": 30, 
+        "confidence": 0.101426, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            0.437286, 
+            168.391815, 
+            63.324913, 
+            349.203339
+        ]
+    }, 
+    {
+        "boxnr": 31, 
+        "confidence": 0.658653, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            617.149292, 
+            220.192444, 
+            816.162476, 
+            470.742737
+        ]
+    }, 
+    {
+        "boxnr": 32, 
+        "confidence": 0.135146, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            618.117615, 
+            225.928024, 
+            761.413025, 
+            333.668762
+        ]
+    }, 
+    {
+        "boxnr": 33, 
+        "confidence": 0.229905, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            629.780640, 
+            119.544998, 
+            883.756958, 
+            463.429260
+        ]
+    }, 
+    {
+        "boxnr": 34, 
+        "confidence": 0.146375, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            926.700989, 
+            189.230377, 
+            1101.629517, 
+            358.797150
+        ]
+    }, 
+    {
+        "boxnr": 35, 
+        "confidence": 0.381641, 
+        "elementtyp": "chair", 
+        "elementposition": [
+            860.551086, 
+            23.607872, 
+            1062.438477, 
+            256.334259
+        ]
+    }
+]

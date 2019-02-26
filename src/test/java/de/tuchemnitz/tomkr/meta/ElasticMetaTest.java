@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +20,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import de.tuchemnitz.tomkr.meta.input.JSONAdapter;
 import de.tuchemnitz.tomkr.meta.model.Asset;
+import de.tuchemnitz.tomkr.meta.model.MetaObject;
 import de.tuchemnitz.tomkr.meta.search.MetaRetrievalRepository;
 import de.tuchemnitz.tomkr.meta.search.MetaRetrievalService;
 import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
@@ -34,6 +37,9 @@ public class ElasticMetaTest {
 
 	@Autowired
 	private MetaRetrievalService metaService;
+	
+	@Autowired
+	JSONAdapter jsonAdapter;
 
 	@Autowired
 	private ElasticsearchTemplate esTemplate;
@@ -46,28 +52,68 @@ public class ElasticMetaTest {
 		esTemplate.refresh(Asset.class);
 	}
 
+	private List<Asset> create(){
+		List<Asset> results = new ArrayList<Asset>();
+		
+		int MAX = 4;
+		int P = 3;
+		
+		String[][][] paths = new String[P][MAX][];
+		String[] values = {"v1", "v2", "v3", "v4"};
+		
+		paths[0][0] = new String[]{"p1", "p2.1", "p3", "p4"};
+		paths[0][1] = new String[]{"p1"};
+		paths[0][2] = new String[]{"p1", "p2.1"};
+		paths[0][3] = new String[]{"p1", "p2.2"};
+		
+		paths[1][0] = new String[]{"p1", "p2.1", "p3.2", "p4.1"};
+		paths[1][1] = new String[]{"p1"};
+		paths[1][2] = new String[]{"p1", "p2.1"};
+		paths[1][3] = new String[]{"p1", "p2.1", "p3.2", "p4.2"};
+		
+		paths[2][0] = new String[]{"p1"};
+		paths[2][1] = new String[]{"p2"};
+		paths[2][2] = new String[]{"p3"};
+		paths[2][3] = new String[]{"p4"};
+		
+
+		for(int k = 0; k<3; k++) {
+			Asset asset = new Asset("asset0" + (k+1));
+			for(int i = 0; i< MAX; i++) {
+				asset.addValue(paths[k][i], values[i]);
+			}
+			results.add(asset);
+		}
+		
+		return results;
+	}
+	
+	
 	@Test
+	public void testSaveFromJson() {
+		String test1FilePath = "D:\\ws\\eclipse_ws\\metaapp\\src\\main\\java\\de\\tuchemnitz\\tomkr\\meta\\test1.json";
+		MetaObject obj1 = jsonAdapter.readJSON(test1FilePath);
+		
+		String test2FilePath = "D:\\ws\\eclipse_ws\\metaapp\\src\\main\\java\\de\\tuchemnitz\\tomkr\\meta\\test2.json";
+		MetaObject obj2 = jsonAdapter.readJSON(test2FilePath);
+		
+		
+		Asset asset = new Asset("ref");
+		asset.getMetaData().put("openpose", obj1);
+		asset.getMetaData().put("detectron", obj2);
+		
+		metaService.save(asset);
+		LOG.debug("done");
+	}
+	
+//	@Test
 	public void testSave() {
 		LOG.debug("testSave");
 		
-		String[] path1 = {"p1", "p2.1", "p3", "p4"};
-		String[] path2 = {"p1" };
-		String[] path3 = {"p1", "p2.1"};
-		String[] path4 = {"p1", "p2.2"};
-		
-		String value1 = "v1";
-		String value2 = "v2";
-		String value3 = "v3";
-		String value4 = "v4";
-		
-		Asset asset = new Asset("asset01");
-		asset.addValue(path1, value1);
-		asset.addValue(path2, value2);
-		asset.addValue(path3, value3);
-		asset.addValue(path4, value4);
+		List<Asset> assets = create();
 		
 		
-		Asset testAsset = metaService.save(asset);
+		Asset testAsset = metaService.save(assets.get(0));
 
 //		assertNotNull(testAsset.getFileName());
 //		assertEquals(testMetaFile.getFileName(), metaFile.getFileName());
@@ -75,27 +121,25 @@ public class ElasticMetaTest {
 	}
 
 //	@Test
-//	public void testFindAll() {
-//		LOG.debug("testFindAll");
-//		String baseName = "file%d";
-//		String baseLocation = "location%d";
-//		int fileCount = 10;
-//		for (int i = 0; i < fileCount; i++) {
-//			MetaFile metaFile = new MetaFile(String.format(baseName, i), String.format(baseLocation, i%2));
-//			metaService.save(metaFile);
-//		}
-//		
-//		Iterable<MetaFile> testMetaFiles = metaService.findAll();
-//		int testCount = 0;
-//		for(MetaFile testMetaFile : testMetaFiles) {
-//			testCount++;
-////			LOG.debug(String.format("%d: %s | %s", testCount, testMetaFile.getFileName(), testMetaFile.getLocation()));
+	public void testFindAll() {
+		LOG.debug("testFindAll");
+		
+		List<Asset> assets = create();
+		
+		Iterable<Asset> testAssets = metaService.findAll();
+		int testCount = 0;
+		for(Asset testAsset : testAssets) {
+			testCount++;
+//			LOG.debug(String.format("%d: %s | %s", testCount, testMetaFile.getFileName(), testMetaFile.getLocation()));
 //			assertTrue(testMetaFile.getFileName().startsWith(baseName.split("%")[0]));
 //			assertTrue(testMetaFile.getLocation().startsWith(baseLocation.split("%")[0]));
-//		}
-//		assertEquals(fileCount, testCount);
-//	}
-//
+		}
+		
+		assertEquals(assets.size(), testCount);
+	}
+	
+	// TODO: how to parse json and dynamically insert into key values... try iterate through jsonobjects -> instanceof array or instanceof dict -> enter as value or new subnode
+
 //	@Test
 //	public void testDelete() {
 //		LOG.debug("testDelete");

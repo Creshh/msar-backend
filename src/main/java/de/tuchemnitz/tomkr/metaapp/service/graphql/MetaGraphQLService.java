@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import de.tuchemnitz.tomkr.metaapp.model.MetaFile;
@@ -29,9 +31,16 @@ public class MetaGraphQLService{
 
     @GraphQLQuery(name = "getAll", description = "get all MetaFiles")
     public List<MetaFile> getAll() {
-        // return metaFileCollection.metaFiles;
         List<MetaFile> result = new ArrayList<>();
         metaElasticService.findAll().forEach(result::add);
+        return result;
+    }
+    
+    @GraphQLQuery(name = "getByLocFuzzy", description = "get MetaFiles fuzzy by location")
+    public List<MetaFile> getLocationFuzzy(String location) {
+        List<MetaFile> result = new ArrayList<>();
+		Page<MetaFile> page = metaElasticService.findByLocationFuzzy(location,"AUTO", PageRequest.of(0, 10));
+		page.forEach(result::add);
         return result;
     }
 

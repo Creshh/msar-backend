@@ -3,6 +3,7 @@ package de.tuchemnitz.tomkr.meta.model;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "meta", type = "Asset")
@@ -14,6 +15,8 @@ public class Asset extends AbstractNode{
 	private long cts;
 	@LastModifiedDate
 	private long mts;
+	
+	private String allFields;
 	
 
 	public Asset(){
@@ -53,6 +56,14 @@ public class Asset extends AbstractNode{
 
 	public void setMts(long mts) {
 		this.mts = mts;
+	}
+
+	public String getAllFields() {
+		return allFields;
+	}
+
+	public void setAllFields(String allFields) {
+		this.allFields = allFields;
 	}
 	
 }
