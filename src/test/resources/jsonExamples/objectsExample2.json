@@ -3,6 +3,6 @@
     "type": "objects",
     "raw": "",
     "objects": ["chair", "chair"],
-    "objects_coordinates": [[123,32,34,65], [423, 38, 32, 46]],
-    "objects_src": "detectron"
+    "coordinates": [[123,32,34,65], [423, 38, 32, 46]],
+    "source": "detectron"
 }
