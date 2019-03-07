@@ -24,9 +24,11 @@ public class JsonHelperTest {
 	public void before() {
 	}
 
+	
+	
 	@Test
 	public void testValidate() {
 		LOG.debug("testValidate");
-		jsonHelper.validate();
+		jsonHelper.validateNew();
 	}
 }
