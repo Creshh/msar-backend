@@ -1,0 +1,20 @@
+{
+    "reference": "path/to/example/image3.jpg",
+    "type": "exif",
+    "raw": "",
+    "manufacturer": "Canon",
+    "model": "Mark III",
+    "lens": "EF50mm f/2.5 Compact Macro",
+    "orientation": "top left",
+    "datetime": "2019-02-20_13-03-46",
+    "datetimeoriginal": "2019-02-20_21-48-30",
+    "compression": "jpeg",
+    "fnumber": "f/6.3",
+    "exposuretime": "1/800",
+    "isospeed": "100",
+    "meteringmode": "Matrix",
+    "focallength": "50mm",
+    "flash": "no (enforced)",
+    "xdim": 5163,
+    "ydim": 3442
+}

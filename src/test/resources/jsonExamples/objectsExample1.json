@@ -1,0 +1,8 @@
+{
+    "reference": "path/to/example/image5.jpg",
+    "type": "objects",
+    "raw": "",
+    "objects": ["chair", "table", "chair"],
+    "objects_coordinates": [[123,32,34,65], [53, 78, 2, 4], [423, 38, 32, 46]],
+    "objects_src": "detectron"
+}

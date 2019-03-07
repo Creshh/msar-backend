@@ -1,0 +1,13 @@
+{
+    "reference": "path/to/example/image9.jpg",
+	"type": "location",
+	"source": "user",
+	"raw": "",
+	"description": "",
+	"latitude": 50.23423,
+	"longitude": 23.4234,
+	"county": "Germany",
+	"city": "Dietensdorf",
+	"street": "Prager Strasse",
+	"number": "43b"
+}

@@ -1,5 +1,5 @@
 {
-	"reference": "/path/to/file",
+    "reference": "path/to/example/image7.jpg",
 	"type": "location",
 	"source": "user",
 	"raw": "",
@@ -8,6 +8,6 @@
 	"longitude": 24.65444,
 	"country": "Germany",
 	"city": "Dresden",
-	"street": "Prager Straﬂe",
+	"street": "Prager Strasse",
 	"number": "43b"
 }
