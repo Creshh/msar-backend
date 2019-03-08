@@ -52,7 +52,7 @@ public class ElasticServiceTest {
 		metaData.put("locationExample3.json", "location");
 		
 		for(Entry<String, String> entry : metaData.entrySet()) {
-			Map<String, Object> map = json.readJsonToMap(basePath + entry.getKey());
+			Map<String, Object> map = JsonHelper.readJsonToMapFromFile(basePath + entry.getKey());
 			elastic.indexDocument(map);
 		}
 		

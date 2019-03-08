@@ -46,7 +46,7 @@ public class ElasticService {
 	private static Logger LOG = LoggerFactory.getLogger(ElasticService.class);
 
 	private static final String INDEX = "msar";
-	private static final String TYPE = "meta";
+	public static final String TYPE = "meta";
 	private static final String FIELD_REFERENCE = "reference";
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
@@ -139,7 +139,7 @@ public class ElasticService {
 		SuggestBuilder builder = new SuggestBuilder();
 		for (String field : fields) {
 			CompletionSuggestionBuilder completionSuggestBuilder = SuggestBuilders.completionSuggestion(field);
-			completionSuggestBuilder.skipDuplicates(true); // when skipDuclicates = false, suggestions will be
+			completionSuggestBuilder.skipDuplicates(true); // when skipDuplicates = false, suggestions will be
 															// duplicated for example in case of arrays with multiple
 															// entries
 			completionSuggestBuilder.prefix(value, Fuzziness.AUTO);
