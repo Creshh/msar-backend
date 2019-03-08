@@ -106,7 +106,7 @@ public class SchemaHandler {
 				JSONObject field = properties.getJSONObject(key);
 				
 				// extract and map type definition from schema to elastic types
-				String dataType = typeRegistry.getTypeMapping(field.getString(type));
+				String dataType = typeRegistry.getTypeMapping(field.getString(SchemaFields.TYPE));
 				if(dataType == null) {
 					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(type)));
 					return false;

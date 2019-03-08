@@ -2,6 +2,7 @@
     "reference": "path/to/example/image2.jpg",
     "type": "exif",
     "raw": "",
+    "source": "camera",
     "manufacturer": "Nikon",
     "model": "Nikon Coolpix",
     "lens": "EF50mm f/2.5 Compact Macro",
