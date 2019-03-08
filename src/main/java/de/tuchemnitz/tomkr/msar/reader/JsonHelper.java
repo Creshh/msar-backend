@@ -2,6 +2,7 @@ package de.tuchemnitz.tomkr.msar.reader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -13,11 +14,10 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Service
 public class JsonHelper {
 
 	private static Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
@@ -26,35 +26,61 @@ public class JsonHelper {
 		return new JSONObject(new JSONTokener(json));
 	}
 	
-	public static JSONObject loadJSONFromFile(String filePath) {
+	public static JSONObject loadJSONFromFilePath(String filePath) {
+		return loadJSONFromFile(new File(filePath));
+	}
+	
+	public static JSONObject loadJSONFromFile(File file) {
 		InputStream is = null;
 		String json = null;
 		try {
-			is = new FileInputStream(new File("D:\\ws\\eclipse_ws\\metaapp\\src\\main\\resources\\schema\\metaData.json"));
+			is = new FileInputStream(file);
 			json = IOUtils.toString(is, StandardCharsets.UTF_8);
-			
+			return loadJSON(json);			
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("Error reading from InputStream", e);
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOG.error("Error closing InputStream", e);
 				}
 			}
 		}
-		return loadJSON(json);
+		return null;
 	}
+	
+	public static JSONObject loadJSONFromResource(String resource) {
+		try {
+			File file = ResourceUtils.getFile(String.format("classpath:%s", resource));
+			return loadJSONFromFile(file);
+		} catch (FileNotFoundException e) {
+			LOG.error(String.format("Error reading resource %s", resource), e);
+		}
+		return null;
+	}
+	
 	
 	// validate against schema beforehand; add "tags" to schema, where it is defined which fields will be queried as tags -> put these fields in a registry.  
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> readJsonToMap(String filePath){
+	public static Map<String, Object> readJsonToMapFromFile(String filePath){
 		HashMap<String, Object> result = null;
 		try {
 			result = new ObjectMapper().readValue(new File(filePath), HashMap.class);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error(String.format("Error reading file %s", filePath), e);
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> readJsonToMap(String json){
+		HashMap<String, Object> result = null;
+		try {
+			result = new ObjectMapper().readValue(json, HashMap.class);
+		} catch (IOException e) {
+			LOG.error(String.format("Error reading file json"), e);
 		}
 		return result;
 	}

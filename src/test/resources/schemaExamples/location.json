@@ -32,11 +32,11 @@
 			"type": "number"
 		},
 		"country": {
-			"desc": true,
+			"tag": true,
 			"type": "string"
 		},
 		"city": {
-			"desc": true,
+			"tag": true,
 			"type": "string"
 		},
 		"street": {
