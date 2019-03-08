@@ -2,6 +2,7 @@
     "reference": "path/to/example/image3.jpg",
     "type": "exif",
     "raw": "",
+    "source": "camera",
     "manufacturer": "Canon",
     "model": "Mark III",
     "lens": "EF50mm f/2.5 Compact Macro",

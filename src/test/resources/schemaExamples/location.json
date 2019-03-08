@@ -69,5 +69,6 @@
 				"number"
 			]
 		}
-	]
+	],
+	"additionalProperties": false
 }

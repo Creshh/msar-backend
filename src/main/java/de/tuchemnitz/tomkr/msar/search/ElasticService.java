@@ -1,18 +1,12 @@
 package de.tuchemnitz.tomkr.msar.search;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -45,59 +39,15 @@ public class ElasticService {
 
 	private static Logger LOG = LoggerFactory.getLogger(ElasticService.class);
 
-	private static final String INDEX = "msar";
-	public static final String TYPE = "meta";
 	private static final String FIELD_REFERENCE = "reference";
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
 	@Autowired
 	Config config;
 
-	public void deleteIndex() {
-		DeleteIndexResponse deleteResponse = config.getClient().admin().indices().delete(new DeleteIndexRequest(INDEX))
-				.actionGet();
-		LOG.debug(deleteResponse.toString());
-	}
-
-	public void indexDocument(Map<String, Object> doc) {
-		indexDocument(doc, INDEX);
-	}
-
-	public void indexDocument(Map<String, Object> doc, String index) {
-		IndexResponse response = config.getClient().prepareIndex(index, TYPE).setSource(doc).execute().actionGet();
-		LOG.debug(response.toString());
-	}
-
-	public void createMapping() {
-		createMapping(INDEX);
-	}
-
-	public void createMapping(String index) {
-		try {
-
-			XContentBuilder mappingBuilder = XContentFactory.jsonBuilder().startObject().startObject(TYPE)
-					.startObject("properties").startObject("city").field("type", "text").startObject("fields")
-					.startObject("completion").field("type", "completion").endObject().endObject().endObject()
-					.endObject().endObject().endObject();
-
-			XContentBuilder mappingBuilder2 = XContentFactory.jsonBuilder().startObject().startObject(TYPE)
-					.startObject("properties").startObject("objects").field("type", "text").startObject("fields")
-					.startObject("completion").field("type", "completion").endObject().endObject().endObject()
-					.endObject().endObject().endObject();
-
-			config.getClient().admin().indices().preparePutMapping(index).setType(TYPE).setSource(mappingBuilder)
-					.execute().actionGet();
-			config.getClient().admin().indices().preparePutMapping(index).setType(TYPE).setSource(mappingBuilder2)
-					.execute().actionGet();
-
-		} catch (IOException e) {
-			LOG.error("Error while modifying mapping", e);
-		}
-	}
-
 	private List<Map<String, Object>> search(QueryBuilder queryBuilder, String... indices) {
 		List<Map<String, Object>> results = new ArrayList<>();
-		SearchResponse response = config.getClient().prepareSearch(indices != null ? indices : new String[] { INDEX })
+		SearchResponse response = config.getClient().prepareSearch(indices != null ? indices : new String[] { TypeRegistry.INDEX })
 				.setQuery(queryBuilder).get();
 		for (SearchHit hit : response.getHits()) {
 
@@ -146,7 +96,7 @@ public class ElasticService {
 			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
 		}
 
-		SearchResponse response = config.getClient().prepareSearch(INDEX).setQuery(QueryBuilders.matchAllQuery())
+		SearchResponse response = config.getClient().prepareSearch(TypeRegistry.INDEX).setQuery(QueryBuilders.matchAllQuery())
 				.suggest(builder).execute().actionGet();
 		Suggest suggest = response.getSuggest();
 

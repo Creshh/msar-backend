@@ -64,6 +64,7 @@ public class TypeRegistry {
 
 	
 	public TypeRegistry() {
+		schemaRegistry = new HashMap<>();
 		fieldRegistry = new ArrayList<>();
 		JSONObject json = JsonHelper.loadJSONFromResource(META_SCHEMA);
 		if(json != null) {
@@ -81,7 +82,7 @@ public class TypeRegistry {
 	public void startDocument() throws IOException {
 		mappingBuilder = XContentFactory.jsonBuilder();
 		mappingBuilder.startObject();
-		mappingBuilder.startObject(ElasticService.TYPE);
+//		mappingBuilder.startObject(ElasticFields.TYPE);
 		mappingBuilder.startObject(ElasticFields.PROPERTIES);
 	}
 
@@ -104,7 +105,8 @@ public class TypeRegistry {
 	}
 
 	public XContentBuilder endDocument() throws IOException {
-		mappingBuilder.endObject().endObject().endObject();
+		mappingBuilder.endObject().endObject();
+//		mappingBuilder.endObject();
 		return mappingBuilder;
 	}
 

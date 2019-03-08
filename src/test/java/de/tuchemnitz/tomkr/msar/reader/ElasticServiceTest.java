@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import de.tuchemnitz.tomkr.msar.search.DocumentService;
 import de.tuchemnitz.tomkr.msar.search.ElasticService;
+import de.tuchemnitz.tomkr.msar.search.IndexService;
+import de.tuchemnitz.tomkr.msar.search.TypeRegistry;
 
 
 @RunWith(SpringRunner.class)
@@ -24,14 +27,16 @@ public class ElasticServiceTest {
 
 	@Autowired
 	ElasticService elastic;
-
-	@Autowired
-	JsonHelper json;
 	
+	@Autowired
+	IndexService indexService;
+	
+	@Autowired
+	DocumentService documentService;
 
 	@Before
 	public void before() {
-		elastic.deleteIndex();
+		indexService.deleteIndex(TypeRegistry.INDEX);
 	}
 
 	
@@ -53,7 +58,7 @@ public class ElasticServiceTest {
 		
 		for(Entry<String, String> entry : metaData.entrySet()) {
 			Map<String, Object> map = JsonHelper.readJsonToMapFromFile(basePath + entry.getKey());
-			elastic.indexDocument(map);
+			documentService.indexDocument(map);
 		}
 		
 		Thread.sleep(5000);
@@ -70,6 +75,7 @@ public class ElasticServiceTest {
 		elastic.searchByValue("chair + table");
 		elastic.searchByValue("type:objects + -table");
 		
+		// fails because no mapping exists
 		elastic.getSuggestions("Dresde", "city.completion");
 		elastic.getSuggestions("Dre", "city.completion");
 		elastic.getSuggestions("D", "city.completion");

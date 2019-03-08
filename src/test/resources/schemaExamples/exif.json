@@ -26,16 +26,16 @@
 			"type": "string"
 		},
 		"xdim": {
-			"type": "integer",
-			"required": true
+			"type": "integer"
 		},
 		"ydim": {
-			"type": "integer",
-			"required": true
+			"type": "integer"
 		},
 		"datetime": {
-			"type": "string",
-			"required": true
+			"type": "string"
+		},
+		"manufacturer": {
+			"type": "string"
 		},
 		"model": {
 			"type": "string"
@@ -62,12 +62,10 @@
 			"type": "string"
 		},
 		"meteringmode": {
-			"type": "string",
-			"required": true
+			"type": "string"
 		},
 		"focallength": {
-			"type": "string",
-			"required": true
+			"type": "string"
 		},
 		"flash": {
 			"type": "string"
@@ -81,5 +79,6 @@
 		"ydim",
 		"orientation",
 		"datetime"
-	]
+	],
+	"additionalProperties": false
 }
