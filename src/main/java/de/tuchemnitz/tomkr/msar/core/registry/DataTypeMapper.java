@@ -8,6 +8,7 @@ import de.tuchemnitz.tomkr.msar.utils.Helpers;
 /**
  * 
  * @author Kretzschmar
+ * 
  */
 public class DataTypeMapper {
 	

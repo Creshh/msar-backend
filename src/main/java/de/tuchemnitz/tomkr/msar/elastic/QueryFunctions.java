@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.Config;
 
 /**
  * Make Json Schema where fields which should be searched directly are annotated
@@ -44,11 +44,14 @@ public class QueryFunctions {
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
 	@Autowired
+	Config config;
+	
+	@Autowired
 	Client client;
 
 	private List<Map<String, Object>> search(QueryBuilder queryBuilder, String... indices) {
 		List<Map<String, Object>> results = new ArrayList<>();
-		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] { TypeRegistry.INDEX })
+		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getType()})
 				.setQuery(queryBuilder).get();
 		for (SearchHit hit : response.getHits()) {
 
@@ -97,7 +100,7 @@ public class QueryFunctions {
 			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
 		}
 
-		SearchResponse response = client.prepareSearch(TypeRegistry.INDEX).setQuery(QueryBuilders.matchAllQuery())
+		SearchResponse response = client.prepareSearch(config.getType()).setQuery(QueryBuilders.matchAllQuery())
 				.suggest(builder).execute().actionGet();
 		Suggest suggest = response.getSuggest();
 

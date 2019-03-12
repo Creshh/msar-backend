@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
@@ -34,10 +34,13 @@ public class ElasticServiceTest {
 	
 	@Autowired
 	DocumentFunctions documentService;
+	
+	@Autowired
+	Config config;
 
 	@Before
 	public void before() {
-		indexService.deleteIndex(TypeRegistry.INDEX);
+		indexService.deleteIndex(config.getIndex());
 	}
 
 	

@@ -9,11 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.msar.core.registry.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
 import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
+/**
+ * 
+ * @author Kretzschmar
+ *
+ */
 @Service
 public class DocumentHandler {
 
@@ -23,10 +27,10 @@ public class DocumentHandler {
 	private TypeRegistry typeRegistry;
 
 	@Autowired
-	private SchemaHandler schemaHandler;
-
-	@Autowired
 	private DocumentFunctions documentService;
+	
+	@Autowired
+	private Validator validator;
 
 	public boolean addDocument(String json) {
 		// read
@@ -44,7 +48,7 @@ public class DocumentHandler {
 			return false;
 		}
 
-		boolean valid = schemaHandler.validate(schema, docObj);
+		boolean valid = validator.checkDocument(schema, docObj);
 		if (!valid) {
 			LOG.error("Schema not valid, check errors!");
 			return false;

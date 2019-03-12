@@ -20,9 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
+import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
-import de.tuchemnitz.tomkr.msar.core.registry.SchemaHandler;
-import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 
 
@@ -32,6 +32,9 @@ public class DocumentHandlerTest {
 
 	private static Logger LOG = LoggerFactory.getLogger(DocumentHandlerTest.class);
 
+	@Autowired
+	Config config;
+	
 	@Autowired
 	DocumentHandler documentHandler;
 	
@@ -44,7 +47,7 @@ public class DocumentHandlerTest {
 	@Before
 	public void before() throws FileNotFoundException {
 		try {
-			indexService.deleteIndex(TypeRegistry.INDEX);
+			indexService.deleteIndex(config.getIndex());
 		} catch (Exception e) {
 			LOG.error("Error while deleting index", e);
 		}

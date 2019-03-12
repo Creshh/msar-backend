@@ -16,6 +16,11 @@ import org.springframework.context.annotation.Configuration;
 
 import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
 
+/**
+ * 
+ * @author Kretzschmar
+ *
+ */
 @Configuration
 //@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.tomkr.msar")
 //@EnableMongoRepositories(basePackages = "de.tuchemnitz.tomkr.metaapp.service.mongo")
@@ -32,6 +37,12 @@ public class Config {
 	@Value("${elasticsearch.clustername}")
 	private String clusterName;
 
+	@Value("${elasticsearch.index}")
+	private String index;
+	
+	@Value("${elasticsearch.type}")
+	private String type;
+	
 	@Value("${typeMapping.resource}")
 	private String typeMappingRes;
 	
@@ -71,5 +82,13 @@ public class Config {
 
 	public String getTypeMappingRes() {
 		return typeMappingRes;
+	}
+
+	public String getIndex() {
+		return index;
+	}
+
+	public String getType() {
+		return type;
 	}
 }

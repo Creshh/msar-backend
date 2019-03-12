@@ -1,10 +1,9 @@
-package de.tuchemnitz.tomkr.msar.core.registry;
+package de.tuchemnitz.tomkr.msar.core;
 
 import java.io.IOException;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -12,42 +11,47 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry.SchemaFields;
+import de.tuchemnitz.tomkr.msar.Config;
+import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
+import de.tuchemnitz.tomkr.msar.core.registry.FieldRegistry;
+import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
+/**
+ * 
+ * @author Kretzschmar
+ *
+ */
 @Service
 public class SchemaHandler {
 
 	private static Logger LOG = LoggerFactory.getLogger(SchemaHandler.class);
 
 	@Autowired
+	private Config config;
+	
+	@Autowired
 	private DataTypeMapper dataTypeMapper;
 	
 	@Autowired
 	private TypeRegistry typeRegistry;
+	
+	@Autowired
+	private FieldRegistry fieldRegistry;
 
 	@Autowired
 	private IndexFunctions indexService;
 
-	public boolean validate(Schema schema, JSONObject json) {
-		try {
-			schema.validate(json);
-		} catch (ValidationException e) {
-			LOG.error("ERROR VALIDATING JSON FILE" + e.getMessage());
-
-			e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(System.out::println);
-
-			System.out.println("######################");
-
-			System.out.println(e.toJSON().toString(4));
-
-			System.out.println("######################");
-			return false;
-		}
-		return true;
-	}
-
+	@Autowired
+	private Validator validator;
+	
+//  Maybe get type from title
+//	private static final String TITLE = "title";
+	private static final String TYPE = "type";
+	private static final String PROPERTIES = "properties";
+	private static final String TAG = "tag";
+	
 	/**
 	 * 
 	 * Maybe get type from title
@@ -62,15 +66,7 @@ public class SchemaHandler {
 		}
 
 		JSONObject schemaRoot = JsonHelpers.loadJSON(schemaJSON);
-
-		for (String field : SchemaFields.getAllRequired()) {
-			if (!schemaRoot.has(field)) {
-				LOG.error(String.format("Field \"%s\" has to be specified in schema!", field));
-				return false;
-			}
-		}
-
-		boolean valid = validate(typeRegistry.getMetaSchema(), schemaRoot);
+		boolean valid = validator.checkDocument(typeRegistry.getMetaSchema(), schemaRoot);
 
 		if (!valid) {
 			LOG.error("Given schema is not valid!");
@@ -81,25 +77,25 @@ public class SchemaHandler {
 		typeRegistry.addSchema(type, schema);
 
 		try {
-			typeRegistry.startDocument();
-			JSONObject properties = schemaRoot.getJSONObject(SchemaFields.PROPERTIES);
+			fieldRegistry.startDocument();
+			JSONObject properties = schemaRoot.getJSONObject(PROPERTIES);
 			for (String key : properties.keySet()) {
 				JSONObject field = properties.getJSONObject(key);
 				
 				// extract and map type definition from schema to elastic types
-				String dataType = dataTypeMapper.map(field.getString(SchemaFields.TYPE));
+				String dataType = dataTypeMapper.map(field.getString(TYPE));
 				if(dataType == null) {
-					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(SchemaFields.TYPE)));
+					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(TYPE)));
 					return false;
 				}
 				
 				// add Field to type registry for tagging and to Builder for generation of mapping
-				typeRegistry.addField(TypeRegistry.TYPE, key, dataType, (field.has(SchemaFields.TAG) ? field.getBoolean(SchemaFields.TAG) : false));
+				fieldRegistry.addField(config.getType(), key, dataType, (field.has(TAG) ? field.getBoolean(TAG) : false));
 			}
 
 			// apply mapping update
-			XContentBuilder builder = typeRegistry.endDocument();
-			indexService.createMapping(builder, TypeRegistry.INDEX, TypeRegistry.TYPE);
+			XContentBuilder builder = fieldRegistry.endDocument();
+			indexService.createMapping(builder, config.getType(), config.getType());
 		} catch (IOException e) {
 			LOG.error("Error while creating mapping!", e);
 			return false;
