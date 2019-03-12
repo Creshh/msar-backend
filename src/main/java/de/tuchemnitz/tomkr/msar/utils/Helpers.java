@@ -32,5 +32,4 @@ public class Helpers {
 		
 		return result;
 	}
-	
 }
