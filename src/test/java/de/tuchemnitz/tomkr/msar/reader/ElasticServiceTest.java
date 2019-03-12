@@ -13,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import de.tuchemnitz.tomkr.msar.search.DocumentService;
-import de.tuchemnitz.tomkr.msar.search.ElasticService;
-import de.tuchemnitz.tomkr.msar.search.IndexService;
-import de.tuchemnitz.tomkr.msar.search.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
+import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
+import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
+import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 
 @RunWith(SpringRunner.class)
@@ -26,13 +27,13 @@ public class ElasticServiceTest {
 	private static Logger LOG = LoggerFactory.getLogger(ElasticServiceTest.class);
 
 	@Autowired
-	ElasticService elastic;
+	QueryFunctions elastic;
 	
 	@Autowired
-	IndexService indexService;
+	IndexFunctions indexService;
 	
 	@Autowired
-	DocumentService documentService;
+	DocumentFunctions documentService;
 
 	@Before
 	public void before() {
@@ -57,7 +58,7 @@ public class ElasticServiceTest {
 		metaData.put("locationExample3.json", "location");
 		
 		for(Entry<String, String> entry : metaData.entrySet()) {
-			Map<String, Object> map = JsonHelper.readJsonToMapFromFile(basePath + entry.getKey());
+			Map<String, Object> map = JsonHelpers.readJsonToMapFromFile(basePath + entry.getKey());
 			documentService.indexDocument(map);
 		}
 		
