@@ -20,8 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
-import de.tuchemnitz.tomkr.msar.search.IndexService;
-import de.tuchemnitz.tomkr.msar.search.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
+import de.tuchemnitz.tomkr.msar.core.registry.SchemaHandler;
+import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 
 
 @RunWith(SpringRunner.class)
@@ -34,7 +36,7 @@ public class DocumentHandlerTest {
 	DocumentHandler documentHandler;
 	
 	@Autowired
-	IndexService indexService;
+	IndexFunctions indexService;
 	
 	@Autowired
 	SchemaHandler schemaHandler;

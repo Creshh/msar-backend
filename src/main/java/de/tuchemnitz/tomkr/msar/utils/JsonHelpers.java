@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.reader;
+package de.tuchemnitz.tomkr.msar.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,25 +18,25 @@ import org.springframework.util.ResourceUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonHelper {
+public class JsonHelpers {
 
-	private static Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
+	private static Logger LOG = LoggerFactory.getLogger(JsonHelpers.class);
 
 	public static JSONObject loadJSON(String json) {
 		return new JSONObject(new JSONTokener(json));
 	}
-	
+
 	public static JSONObject loadJSONFromFilePath(String filePath) {
 		return loadJSONFromFile(new File(filePath));
 	}
-	
+
 	public static JSONObject loadJSONFromFile(File file) {
 		InputStream is = null;
 		String json = null;
 		try {
 			is = new FileInputStream(file);
 			json = IOUtils.toString(is, StandardCharsets.UTF_8);
-			return loadJSON(json);			
+			return loadJSON(json);
 		} catch (IOException e) {
 			LOG.error("Error reading from InputStream", e);
 		} finally {
@@ -50,7 +50,7 @@ public class JsonHelper {
 		}
 		return null;
 	}
-	
+
 	public static JSONObject loadJSONFromResource(String resource) {
 		try {
 			File file = ResourceUtils.getFile(String.format("classpath:%s", resource));
@@ -60,11 +60,9 @@ public class JsonHelper {
 		}
 		return null;
 	}
-	
-	
-	// validate against schema beforehand; add "tags" to schema, where it is defined which fields will be queried as tags -> put these fields in a registry.  
+
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> readJsonToMapFromFile(String filePath){
+	public static Map<String, Object> readJsonToMapFromFile(String filePath) {
 		HashMap<String, Object> result = null;
 		try {
 			result = new ObjectMapper().readValue(new File(filePath), HashMap.class);
@@ -73,14 +71,14 @@ public class JsonHelper {
 		}
 		return result;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> readJsonToMap(String json){
+	public static Map<String, Object> readJsonToMap(String json) {
 		HashMap<String, Object> result = null;
 		try {
 			result = new ObjectMapper().readValue(json, HashMap.class);
 		} catch (IOException e) {
-			LOG.error(String.format("Error reading file json"), e);
+			LOG.error(String.format("Error reading json"), e);
 		}
 		return result;
 	}

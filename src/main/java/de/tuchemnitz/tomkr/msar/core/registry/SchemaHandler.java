@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.reader;
+package de.tuchemnitz.tomkr.msar.core.registry;
 
 import java.io.IOException;
 
@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.msar.search.IndexService;
-import de.tuchemnitz.tomkr.msar.search.TypeRegistry;
-import de.tuchemnitz.tomkr.msar.search.TypeRegistry.SchemaFields;
+import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry.SchemaFields;
+import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
+import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 @Service
 public class SchemaHandler {
@@ -22,32 +22,13 @@ public class SchemaHandler {
 	private static Logger LOG = LoggerFactory.getLogger(SchemaHandler.class);
 
 	@Autowired
+	private DataTypeMapper dataTypeMapper;
+	
+	@Autowired
 	private TypeRegistry typeRegistry;
 
 	@Autowired
-	private IndexService indexService;
-
-	public void validateNew() {
-		try {
-			JSONObject rawSchema = JsonHelper
-					.loadJSONFromFilePath("D:\\ws\\eclipse_ws\\metaapp\\src\\main\\resources\\schema\\metaData.json");
-			JSONObject rawFile = JsonHelper.loadJSONFromFilePath(
-					"D:\\ws\\eclipse_ws\\metaapp\\src\\test\\resources\\jsonExamples\\locationExample2.json");
-
-			Schema schema = SchemaLoader.load(rawSchema);
-			schema.validate(rawFile);
-		} catch (ValidationException e) {
-			LOG.error("ERROR VALIDATING JSON FILE" + e.getMessage());
-
-			e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(System.out::println);
-
-			System.out.println("######################");
-
-			System.out.println(e.toJSON().toString(4));
-
-			System.out.println("######################");
-		}
-	}
+	private IndexFunctions indexService;
 
 	public boolean validate(Schema schema, JSONObject json) {
 		try {
@@ -80,7 +61,7 @@ public class SchemaHandler {
 			LOG.error(String.format("Type [%s] already registered - abort registration.", type));
 		}
 
-		JSONObject schemaRoot = JsonHelper.loadJSON(schemaJSON);
+		JSONObject schemaRoot = JsonHelpers.loadJSON(schemaJSON);
 
 		for (String field : SchemaFields.getAllRequired()) {
 			if (!schemaRoot.has(field)) {
@@ -106,9 +87,9 @@ public class SchemaHandler {
 				JSONObject field = properties.getJSONObject(key);
 				
 				// extract and map type definition from schema to elastic types
-				String dataType = typeRegistry.getTypeMapping(field.getString(SchemaFields.TYPE));
+				String dataType = dataTypeMapper.map(field.getString(SchemaFields.TYPE));
 				if(dataType == null) {
-					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(type)));
+					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(SchemaFields.TYPE)));
 					return false;
 				}
 				

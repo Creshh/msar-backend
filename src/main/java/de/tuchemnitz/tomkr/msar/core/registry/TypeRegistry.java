@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.search;
+package de.tuchemnitz.tomkr.msar.core.registry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,14 +13,32 @@ import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.msar.reader.JsonHelper;
+import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 /**
- * maybe split data and register functions / should always be singleton bean; maybe handle concurrent access of data fields
+ * maybe split data and register functions / should always be singleton bean;
+ * maybe handle concurrent access of data fields
  * 
- * put (all) constants in properties files, especially type mapping 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * >>>>>> Split Schema and Field Registry in Separate parts; separate Constants also
+ *  
+ *  
+ *  
+ *  
+ *  
+ *  
+ *  
+ *  
+ *  
+ * put (all) constants in properties files, especially type mapping
+ * 
  * @author Kretzschmar
  *
  */
@@ -28,70 +46,59 @@ import de.tuchemnitz.tomkr.msar.reader.JsonHelper;
 public class TypeRegistry {
 
 	private static Logger LOG = LoggerFactory.getLogger(TypeRegistry.class);
-	
+
 	private static final String META_SCHEMA = "meta-schema-v7.json";
 	public static final String INDEX = "msar";
 	public static final String TYPE = "meta";
-	
+
 	public static class SchemaFields {
 		public static final String TITLE = "title";
 		public static final String TYPE = "type";
 		public static final String PROPERTIES = "properties";
-		
-		
+
 		public static final String TAG = "tag";
 
 		public static String[] getAllRequired() {
 			return new String[] { PROPERTIES, TITLE, TYPE };
 		}
 	}
-	
+
 	public static class ElasticFields {
 		public static final String PROPERTIES = "properties";
 		public static final String FIELDS = "fields";
 		public static final String TYPE = "type";
 		public static final String COMPLETION = "completion";
 	}
-	
-	private static Map<String, String> typeMapping;
 
-	
 	private List<String> fieldRegistry;
 	private Map<String, Schema> schemaRegistry;
 	private XContentBuilder mappingBuilder;
 
-	private Schema metaSchema; 
+	private Schema metaSchema;
 
-	
 	public TypeRegistry() {
 		schemaRegistry = new HashMap<>();
 		fieldRegistry = new ArrayList<>();
-		JSONObject json = JsonHelper.loadJSONFromResource(META_SCHEMA);
-		if(json != null) {
+		JSONObject json = JsonHelpers.loadJSONFromResource(META_SCHEMA);
+		if (json != null) {
 			metaSchema = SchemaLoader.load(json);
 		} else {
 			LOG.error(String.format("MetaSchema [%s] could not be found!", META_SCHEMA));
 		}
-		
-		typeMapping = new HashMap<>();
-		typeMapping.put("string", "text");
-		typeMapping.put("integer", "long");
-		typeMapping.put("number", "long");
 	}
-	
+
 	public void startDocument() throws IOException {
 		mappingBuilder = XContentFactory.jsonBuilder();
 		mappingBuilder.startObject();
-//		mappingBuilder.startObject(ElasticFields.TYPE);
 		mappingBuilder.startObject(ElasticFields.PROPERTIES);
 	}
 
 	public void addField(String type, String field, String dataType, boolean searcheable) throws IOException {
-		
-		if(searcheable) {
+
+		if (searcheable) {
 			fieldRegistry.add(field);
 		}
-		
+
 		mappingBuilder.startObject(field);
 		mappingBuilder.field(ElasticFields.TYPE, dataType);
 		if (searcheable) {
@@ -106,14 +113,13 @@ public class TypeRegistry {
 
 	public XContentBuilder endDocument() throws IOException {
 		mappingBuilder.endObject().endObject();
-//		mappingBuilder.endObject();
 		return mappingBuilder;
 	}
 
 	public void addSchema(String type, Schema schema) {
 		schemaRegistry.put(type, schema);
 	}
-	
+
 	public Schema getSchema(String type) {
 		return schemaRegistry.get(type);
 	}
@@ -124,9 +130,5 @@ public class TypeRegistry {
 
 	public Schema getMetaSchema() {
 		return metaSchema;
-	}
-	
-	public String getTypeMapping(String sourceType) {
-		return typeMapping.get(sourceType);
 	}
 }

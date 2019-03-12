@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.search;
+package de.tuchemnitz.tomkr.msar.elastic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -19,9 +20,9 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-import de.tuchemnitz.tomkr.msar.Config;
+import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
 
 /**
  * Make Json Schema where fields which should be searched directly are annotated
@@ -34,20 +35,20 @@ import de.tuchemnitz.tomkr.msar.Config;
  * @author Tom Kretzschmar
  *
  */
-@Service
-public class ElasticService {
+@Repository
+public class QueryFunctions {
 
-	private static Logger LOG = LoggerFactory.getLogger(ElasticService.class);
+	private static Logger LOG = LoggerFactory.getLogger(QueryFunctions.class);
 
 	private static final String FIELD_REFERENCE = "reference";
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
 	@Autowired
-	Config config;
+	Client client;
 
 	private List<Map<String, Object>> search(QueryBuilder queryBuilder, String... indices) {
 		List<Map<String, Object>> results = new ArrayList<>();
-		SearchResponse response = config.getClient().prepareSearch(indices != null ? indices : new String[] { TypeRegistry.INDEX })
+		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] { TypeRegistry.INDEX })
 				.setQuery(queryBuilder).get();
 		for (SearchHit hit : response.getHits()) {
 
@@ -96,7 +97,7 @@ public class ElasticService {
 			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
 		}
 
-		SearchResponse response = config.getClient().prepareSearch(TypeRegistry.INDEX).setQuery(QueryBuilders.matchAllQuery())
+		SearchResponse response = client.prepareSearch(TypeRegistry.INDEX).setQuery(QueryBuilders.matchAllQuery())
 				.suggest(builder).execute().actionGet();
 		Suggest suggest = response.getSuggest();
 

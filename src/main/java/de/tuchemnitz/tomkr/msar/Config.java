@@ -14,28 +14,37 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
+
 @Configuration
 //@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.tomkr.msar")
 //@EnableMongoRepositories(basePackages = "de.tuchemnitz.tomkr.metaapp.service.mongo")
 public class Config {
-	
+
 	private static Logger LOG = LoggerFactory.getLogger(Config.class);
 
-
 	@Value("${elasticsearch.host}")
-	public String host;
-	
+	private String host;
+
 	@Value("${elasticsearch.port}")
-	public int port;
-	
+	private int port;
+
 	@Value("${elasticsearch.clustername}")
-	public String clusterName;
+	private String clusterName;
+
+	@Value("${typeMapping.resource}")
+	private String typeMappingRes;
 	
 	private Client client;
+
+	@Bean
+	public DataTypeMapper getDataTypeMapper() {
+		return new DataTypeMapper(typeMappingRes);
+	}
 	
 	@Bean
 	public Client getClient() {
-		if(client == null) {
+		if (client == null) {
 			Settings settings = Settings.builder().put("cluster.name", clusterName).build();
 			TransportClient client = new PreBuiltTransportClient(settings);
 			try {
@@ -46,5 +55,21 @@ public class Config {
 			this.client = client;
 		}
 		return this.client;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public String getClusterName() {
+		return clusterName;
+	}
+
+	public String getTypeMappingRes() {
+		return typeMappingRes;
 	}
 }
