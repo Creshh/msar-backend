@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.reader;
+package de.tuchemnitz.tomkr.msar.core;
 
 import static org.junit.Assert.assertTrue;
 

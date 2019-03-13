@@ -1,6 +1,7 @@
 package de.tuchemnitz.tomkr.msar.elastic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.tuchemnitz.tomkr.msar.Config;
+import de.tuchemnitz.tomkr.msar.core.registry.FieldRegistry;
 
 /**
  * Make Json Schema where fields which should be searched directly are annotated
@@ -43,6 +45,9 @@ public class QueryFunctions {
 	private static final String FIELD_REFERENCE = "reference";
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
+	@Autowired
+	FieldRegistry fieldRegistry;
+	
 	@Autowired
 	Config config;
 	
@@ -72,8 +77,8 @@ public class QueryFunctions {
 		return search(QueryBuilders.matchQuery(field, value), indices);
 	}
 
-	public List<Map<String, Object>> matchByRange(long lower, long upper, String field, String... indices) {
-		LOG.debug(String.format("Search of [%d - %d] in field [%s]", lower, upper, field));
+	public List<Map<String, Object>> matchByRange(double lower, double upper, String field, String... indices) {
+		LOG.debug(String.format("Search of [%s - %s] in field [%s]", String.valueOf(lower), String.valueOf(upper), field));
 		return search(QueryBuilders.rangeQuery(field).from(lower, true).to(upper, true), indices);
 	}
 
@@ -83,15 +88,24 @@ public class QueryFunctions {
 	}
 
 	public Map<String, Map<String, Object>> getSuggestions(String value) {
-		String[] fields = new String[] { "city.completion" }; // TODO: get all suggestion fields from field registry
-		return getSuggestions(value, fields);
+		return getSuggestions(value, fieldRegistry.getAll());
+	}
+	
+	public Map<String, Map<String, Object>> getSuggestions(String value, String field) {
+		return getSuggestions(value, Arrays.asList(field));
 	}
 
-	public Map<String, Map<String, Object>> getSuggestions(String value, String... fields) {
+	public Map<String, Map<String, Object>> getSuggestions(String value, List<String> fields) {
+		
+		List<String> completionFields = new ArrayList<>();
+		for(String field : fields) {
+			completionFields.add(String.format("%s.completion", field));
+		}
+		
 		Map<String, Map<String, Object>> result = new HashMap<>();
 
 		SuggestBuilder builder = new SuggestBuilder();
-		for (String field : fields) {
+		for (String field : completionFields) {
 			CompletionSuggestionBuilder completionSuggestBuilder = SuggestBuilders.completionSuggestion(field);
 			completionSuggestBuilder.skipDuplicates(true); // when skipDuplicates = false, suggestions will be
 															// duplicated for example in case of arrays with multiple
@@ -100,11 +114,11 @@ public class QueryFunctions {
 			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
 		}
 
-		SearchResponse response = client.prepareSearch(config.getType()).setQuery(QueryBuilders.matchAllQuery())
+		SearchResponse response = client.prepareSearch(config.getIndex()).setQuery(QueryBuilders.matchAllQuery())
 				.suggest(builder).execute().actionGet();
 		Suggest suggest = response.getSuggest();
 
-		for (String field : fields) {
+		for (String field : completionFields) {
 			CompletionSuggestion fieldSuggestion = suggest.getSuggestion(String.format(SUGGEST_FORMAT, field));
 			LOG.debug(String.format("Suggestion queried for [%s] in field [%s]", value, field));
 			for (CompletionSuggestion.Entry entry : fieldSuggestion.getEntries()) {
