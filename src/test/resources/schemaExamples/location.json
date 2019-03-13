@@ -47,23 +47,21 @@
 			"type": "string"
 		}
 	},
+	"required": [
+		"reference",
+		"type",
+		"source"
+	],
 	"anyOf": [
 		{
 			"required": [
-				"reference",
-				"type",
-				"source",
 				"latitude",
 				"longitude"
 			]
 		},
 		{
 			"required": [
-				"reference",
-				"type",
-				"source",
 				"country",
-				"city",
 				"city",
 				"street",
 				"number"

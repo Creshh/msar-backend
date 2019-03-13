@@ -95,7 +95,7 @@ public class SchemaHandler {
 
 			// apply mapping update
 			XContentBuilder builder = fieldRegistry.endDocument();
-			indexService.createMapping(builder, config.getType(), config.getType());
+			indexService.createMapping(builder, config.getIndex(), config.getType());
 		} catch (IOException e) {
 			LOG.error("Error while creating mapping!", e);
 			return false;

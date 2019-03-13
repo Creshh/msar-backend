@@ -3,10 +3,9 @@
 	"type": "location",
 	"source": "user",
 	"raw": "",
-	"description": "",
 	"latitude": 50.23423,
 	"longitude": 23.4234,
-	"county": "Germany",
+	"country": "Germany",
 	"city": "Dresden",
 	"street": "Prager Strasse",
 	"number": "43b"

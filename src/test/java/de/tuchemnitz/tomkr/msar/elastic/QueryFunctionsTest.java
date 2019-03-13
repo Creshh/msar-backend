@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.reader;
+package de.tuchemnitz.tomkr.msar.elastic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +22,9 @@ import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ElasticServiceTest {
+public class QueryFunctionsTest {
 
-	private static Logger LOG = LoggerFactory.getLogger(ElasticServiceTest.class);
+	private static Logger LOG = LoggerFactory.getLogger(QueryFunctionsTest.class);
 
 	@Autowired
 	QueryFunctions elastic;

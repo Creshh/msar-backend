@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.reader;
+package de.tuchemnitz.tomkr.msar.utils;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

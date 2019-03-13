@@ -27,7 +27,7 @@ public class DocumentHandler {
 	private TypeRegistry typeRegistry;
 
 	@Autowired
-	private DocumentFunctions documentService;
+	private DocumentFunctions docFunctions;
 	
 	@Autowired
 	private Validator validator;
@@ -55,8 +55,13 @@ public class DocumentHandler {
 		}
 
 		// index
-		documentService.indexDocument(doc);
+		docFunctions.indexDocument(doc);
 
+		return true;
+	}
+	
+	public boolean deleteDocument(String type, String reference) {
+//		docFunctions.deleteDocument();
 		return true;
 	}
 }
