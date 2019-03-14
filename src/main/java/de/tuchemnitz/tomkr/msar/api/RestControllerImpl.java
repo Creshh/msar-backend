@@ -20,7 +20,7 @@ import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 
 
 @org.springframework.web.bind.annotation.RestController
-@RequestMapping("v1")
+@RequestMapping("api")
 public class RestControllerImpl implements RestController{
 	private static Logger LOG = LoggerFactory.getLogger(RestControllerImpl.class);
 
@@ -36,11 +36,12 @@ public class RestControllerImpl implements RestController{
 
 	@RequestMapping("/")
 	public String index() {
-		LOG.debug("Index");
-		return "Index";
+		LOG.debug("API Index");
+		return "API Index";
 	}
 
 
+	
 	@GetMapping("/suggest")
 	@Override
 	public List<String> suggest(String prefix) {

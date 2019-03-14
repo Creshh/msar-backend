@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.tuchemnitz.tomkr.msar.Config;
-import de.tuchemnitz.tomkr.msar.core.registry.FieldRegistry;
+import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 
 /**
  * Make Json Schema where fields which should be searched directly are annotated
@@ -46,7 +46,7 @@ public class QueryFunctions {
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
 	@Autowired
-	FieldRegistry fieldRegistry;
+	MetaTypeService typeService;
 	
 	@Autowired
 	Config config;
@@ -67,11 +67,6 @@ public class QueryFunctions {
 		return results;
 	}
 
-//	public List<Map<String, Object>> searchAll(String... indices) {
-//		LOG.debug(String.format(">> Search all fields"));
-//		return search(QueryBuilders.matchAllQuery(), indices);
-//	}
-
 	public List<Map<String, Object>> matchByValue(String value, String field, String... indices) {
 		LOG.debug(String.format("Search of [%s] in field [%s]", value, field));
 		return search(QueryBuilders.matchQuery(field, value), indices);
@@ -88,7 +83,7 @@ public class QueryFunctions {
 	}
 
 	public Map<String, Map<String, Object>> getSuggestions(String value) {
-		return getSuggestions(value, fieldRegistry.getAll());
+		return getSuggestions(value, typeService.getAllFields());
 	}
 	
 	public Map<String, Map<String, Object>> getSuggestions(String value, String field) {

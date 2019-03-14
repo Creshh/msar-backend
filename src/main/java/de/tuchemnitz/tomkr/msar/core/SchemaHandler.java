@@ -2,9 +2,6 @@ package de.tuchemnitz.tomkr.msar.core;
 
 import java.io.IOException;
 
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +10,10 @@ import org.springframework.stereotype.Service;
 
 import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
-import de.tuchemnitz.tomkr.msar.core.registry.FieldRegistry;
-import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
-import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
+import de.tuchemnitz.tomkr.msar.core.registry.MappingBuilder;
+import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
+import de.tuchemnitz.tomkr.msar.core.registry.types.Field;
+import de.tuchemnitz.tomkr.msar.core.registry.types.MetaType;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 /**
@@ -35,72 +33,71 @@ public class SchemaHandler {
 	private DataTypeMapper dataTypeMapper;
 	
 	@Autowired
-	private TypeRegistry typeRegistry;
+	private MetaTypeService metaTypeService;
 	
 	@Autowired
-	private FieldRegistry fieldRegistry;
-
-	@Autowired
-	private IndexFunctions indexService;
+	private MappingBuilder mappingBuilder;
 
 	@Autowired
 	private Validator validator;
 	
-//  Maybe get type from title
-//	private static final String TITLE = "title";
 	private static final String TYPE = "type";
 	private static final String PROPERTIES = "properties";
 	private static final String TAG = "tag";
 	
 	/**
 	 * 
-	 * Maybe get type from title
 	 * 
 	 * @param type
 	 * @param schemaJSON
 	 * @return
 	 */
 	public boolean registerSchema(String type, String schemaJSON) {
-		if (typeRegistry.contains(type)) {
+		if (metaTypeService.contains(type)) {
 			LOG.error(String.format("Type [%s] already registered - abort registration.", type));
+			return false;
 		}
 
 		JSONObject schemaRoot = JsonHelpers.loadJSON(schemaJSON);
-		boolean valid = validator.checkDocument(typeRegistry.getMetaSchema(), schemaRoot);
+		boolean valid = validator.checkDocument(metaTypeService.getMetaSchema(), schemaRoot);
 
 		if (!valid) {
 			LOG.error("Given schema is not valid!");
 			return false;
 		}
 
-		Schema schema = SchemaLoader.load(schemaRoot);
-		typeRegistry.addSchema(type, schema);
+		MetaType metaType = new MetaType();
+		metaType.setType(type);
+		metaType.setSchema(schemaJSON);
 
 		try {
-			fieldRegistry.startDocument();
+			mappingBuilder.startDocument();
 			JSONObject properties = schemaRoot.getJSONObject(PROPERTIES);
 			for (String key : properties.keySet()) {
 				JSONObject field = properties.getJSONObject(key);
 				
-				// extract and map type definition from schema to elastic types
 				String dataType = dataTypeMapper.map(field.getString(TYPE));
 				if(dataType == null) {
 					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(TYPE)));
 					return false;
 				}
 				
-				// add Field to type registry for tagging and to Builder for generation of mapping
-				fieldRegistry.addField(config.getType(), key, dataType, (field.has(TAG) ? field.getBoolean(TAG) : false));
+				boolean searchable = field.has(TAG) ? field.getBoolean(TAG) : false;
+				mappingBuilder.addField(key, dataType, searchable);
+				if(searchable) {
+					metaType.getFields().add(new Field(key, metaType));
+				}
 			}
 
-			// apply mapping update
-			XContentBuilder builder = fieldRegistry.endDocument();
-			indexService.createMapping(builder, config.getIndex(), config.getType());
+			 mappingBuilder.endDocument();
+			 mappingBuilder.applyMapping(config.getIndex(), config.getType());
 		} catch (IOException e) {
 			LOG.error("Error while creating mapping!", e);
 			return false;
 		}
-
+		
+		metaTypeService.addType(metaType);
+		
 		return true;
 	}
 }
