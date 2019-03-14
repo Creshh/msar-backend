@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.tuchemnitz.tomkr.msar.Config;
+import de.tuchemnitz.tomkr.msar.api.data.SuggestCategory;
+import de.tuchemnitz.tomkr.msar.api.data.SuggestItem;
 import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 
 /**
@@ -82,15 +84,53 @@ public class QueryFunctions {
 		return search(QueryBuilders.queryStringQuery(value), indices);
 	}
 
-	public Map<String, Map<String, Object>> getSuggestions(String value) {
+	public Map<String, SuggestCategory> getSuggestions(String value) {
 		return getSuggestions(value, typeService.getAllFields());
 	}
 	
-	public Map<String, Map<String, Object>> getSuggestions(String value, String field) {
+	public Map<String, SuggestCategory> getSuggestions(String value, String field) {
 		return getSuggestions(value, Arrays.asList(field));
 	}
 
-	public Map<String, Map<String, Object>> getSuggestions(String value, List<String> fields) {
+	public Map<String, SuggestCategory> getSuggestions(String value, List<String> fields) {
+		
+		Map<String, SuggestCategory> result = new HashMap<>();
+//		Map<String, List<String>> result = new HashMap<>();
+
+		SuggestBuilder builder = new SuggestBuilder();
+		for (String field : fields) {
+			CompletionSuggestionBuilder completionSuggestBuilder = SuggestBuilders.completionSuggestion(String.format("%s.completion", field));
+			completionSuggestBuilder.skipDuplicates(true); // when skipDuplicates = false, suggestions will be
+															// duplicated for example in case of arrays with multiple
+															// entries
+			completionSuggestBuilder.prefix(value, Fuzziness.AUTO);
+			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
+		}
+
+		SearchResponse response = client.prepareSearch(config.getIndex()).setQuery(QueryBuilders.matchAllQuery())
+				.suggest(builder).execute().actionGet();
+		Suggest suggest = response.getSuggest();
+
+		for (String field : fields) {
+			CompletionSuggestion fieldSuggestion = suggest.getSuggestion(String.format(SUGGEST_FORMAT, field));
+			LOG.debug(String.format("Suggestion queried for [%s] in field [%s]", value, String.format("%s.completion", field)));
+			for (CompletionSuggestion.Entry entry : fieldSuggestion.getEntries()) {
+				for (Option option : entry.getOptions()) {
+					if(result.get(field) == null) {
+						result.put(field, new SuggestCategory(field));
+					}
+					String suggestion = option.getText().string();
+					LOG.debug("> suggestion: " + suggestion + " for Doc: " + option.getHit().getSourceAsMap().get(FIELD_REFERENCE) + " ["
+							+ option.getHit().getId() + "]");
+
+					result.get(field).getResults().add(new SuggestItem(suggestion));
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Map<String, Map<String, Object>> legacyGetSuggestions(String value, List<String> fields) {
 		
 		List<String> completionFields = new ArrayList<>();
 		for(String field : fields) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import de.tuchemnitz.tomkr.msar.api.data.SuggestCategory;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
@@ -21,7 +22,7 @@ import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("api")
-public class RestControllerImpl implements RestController{
+public class RestControllerImpl {
 	private static Logger LOG = LoggerFactory.getLogger(RestControllerImpl.class);
 
 
@@ -43,27 +44,23 @@ public class RestControllerImpl implements RestController{
 
 	
 	@GetMapping("/suggest")
-	@Override
-	public List<String> suggest(String prefix) {
+	public Map<String, SuggestCategory> suggest(String prefix) {
 		LOG.debug(String.format("[/v1/suggest]: [%s]", prefix));
-		return new ArrayList<String>(queryFunctions.getSuggestions(prefix).keySet());
+		return queryFunctions.getSuggestions(prefix);
 	}
 
 
 	@GetMapping("/search/query")
-	@Override
 	public List<Map<String, Object>> search(String query) {
 		return queryFunctions.searchByValue(query);
 	}
 
 	@GetMapping("/search/field")
-	@Override
 	public List<Map<String,Object>> search(String value, String field) {
 		return queryFunctions.matchByValue(value, field);
 	}
 
 	@GetMapping("/search/range")
-	@Override
 	public List<Map<String,Object>> search(double lower, double upper, String field) {
 //		if(!(lower instanceof Number && upper instanceof Number)) {
 //			LOG.error("Wrong datatype, numbers expected");
@@ -74,7 +71,6 @@ public class RestControllerImpl implements RestController{
 
 
 	@PostMapping("/addType")
-	@Override
 	public boolean addType(@RequestParam String type, @RequestBody String schema) {
 		LOG.debug(String.format("[/v1/addType]: [%s] \n------------------------\n%s\n------------------------", type, schema));
 		return schemaHandler.registerSchema(type, schema);
@@ -82,7 +78,6 @@ public class RestControllerImpl implements RestController{
 
 
 	@PostMapping("/addDocument")
-	@Override
 	public boolean addDocument(@RequestBody String document) {
 		LOG.debug(String.format("[/v1/addDocument]: \n%s\n------------------------", document));
 		return documentHandler.addDocument(document);
