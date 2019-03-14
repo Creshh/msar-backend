@@ -1,5 +1,6 @@
 package de.tuchemnitz.tomkr.msar.elastic;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -61,7 +62,7 @@ public class QueryFunctionsTest {
 		metaData.put("locationExample3.json", "location");
 		
 		for(Entry<String, String> entry : metaData.entrySet()) {
-			Map<String, Object> map = JsonHelpers.readJsonToMapFromFile(basePath + entry.getKey());
+			Map<String, Object> map = JsonHelpers.readJsonToMapFromFile(new File(basePath + entry.getKey()));
 			documentService.indexDocument(map);
 		}
 		

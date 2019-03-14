@@ -1,14 +1,13 @@
 package de.tuchemnitz.tomkr.msar.core.registry;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 
 /**
  * maybe split data and register functions / should always be singleton bean;
@@ -18,31 +17,26 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class FieldRegistry {
+public class MappingBuilder {
 
+	@Autowired
+	private IndexFunctions indexService;
+	
 	private static final String PROPERTIES = "properties";
 	private static final String FIELDS = "fields";
 	private static final String TYPE = "type";
 	private static final String COMPLETION = "completion";
 
-	private Map<String,String> fieldRegistry;
 	private XContentBuilder mappingBuilder;
 	
-	public FieldRegistry() {
-		fieldRegistry = new HashMap<>();
-	}
-
+	
 	public void startDocument() throws IOException {
 		mappingBuilder = XContentFactory.jsonBuilder();
 		mappingBuilder.startObject();
 		mappingBuilder.startObject(PROPERTIES);
 	}
 
-	public void addField(String metaType, String field, String dataType, boolean searcheable) throws IOException {
-		if (searcheable) {
-			fieldRegistry.put(metaType, field);
-		}
-
+	public void addField(String field, String dataType, boolean searcheable) throws IOException {
 		mappingBuilder.startObject(field);
 		mappingBuilder.field(TYPE, dataType);
 		if (searcheable) {
@@ -55,12 +49,11 @@ public class FieldRegistry {
 		mappingBuilder.endObject();
 	}
 
-	public XContentBuilder endDocument() throws IOException {
+	public void endDocument() throws IOException {
 		mappingBuilder.endObject().endObject();
-		return mappingBuilder;
 	}
 	
-	public List<String> getAll(){
-		return new ArrayList<String>(fieldRegistry.values());
+	public void applyMapping(String index, String type) {
+		indexService.createMapping(mappingBuilder, index, type);
 	}
 }

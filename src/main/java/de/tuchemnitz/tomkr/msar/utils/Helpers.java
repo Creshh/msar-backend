@@ -1,11 +1,19 @@
 package de.tuchemnitz.tomkr.msar.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 
 public class Helpers {
 
@@ -31,5 +39,34 @@ public class Helpers {
 		}
 		
 		return result;
+	}
+	
+	public static String readFile(File file) {
+		InputStream is = null;
+		try {
+			is = new FileInputStream(file);
+			return IOUtils.toString(is, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			LOG.error("Error reading from InputStream", e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					LOG.error("Error closing InputStream", e);
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String readResource(String resource) {
+		try {
+			File file = ResourceUtils.getFile(String.format("classpath:%s", resource));
+			return readFile(file);
+		} catch (FileNotFoundException e) {
+			LOG.error(String.format("Error reading resource %s", resource), e);
+		}
+		return null;
 	}
 }

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
 
@@ -22,8 +23,7 @@ import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
  *
  */
 @Configuration
-//@EnableElasticsearchRepositories(basePackages = "de.tuchemnitz.tomkr.msar")
-//@EnableMongoRepositories(basePackages = "de.tuchemnitz.tomkr.metaapp.service.mongo")
+@EnableJpaRepositories(basePackages = "de.tuchemnitz.tomkr.msar.db")
 public class Config {
 
 	private static Logger LOG = LoggerFactory.getLogger(Config.class);
@@ -45,6 +45,9 @@ public class Config {
 	
 	@Value("${typeMapping.resource}")
 	private String typeMappingRes;
+	
+	@Value("${metaSchema.resource}")
+	private String metaSchemaRes;
 	
 	private Client client;
 
@@ -90,5 +93,9 @@ public class Config {
 
 	public String getType() {
 		return type;
+	}
+	
+	public String getMetaSchemaRes() {
+		return metaSchemaRes;
 	}
 }

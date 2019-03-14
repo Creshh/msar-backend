@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.msar.core.registry.TypeRegistry;
+import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
@@ -24,7 +24,7 @@ public class DocumentHandler {
 	private static Logger LOG = LoggerFactory.getLogger(DocumentHandler.class);
 
 	@Autowired
-	private TypeRegistry typeRegistry;
+	private MetaTypeService typeRegistry;
 
 	@Autowired
 	private DocumentFunctions docFunctions;
