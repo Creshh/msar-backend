@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import de.tuchemnitz.tomkr.msar.api.data.SuggestCategory;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
@@ -20,10 +21,10 @@ import de.tuchemnitz.tomkr.msar.utils.TestDataGenerator;
 
 
 
-@org.springframework.web.bind.annotation.RestController
+@RestController
 @RequestMapping("api")
-public class RestControllerImpl {
-	private static Logger LOG = LoggerFactory.getLogger(RestControllerImpl.class);
+public class SearchApiController {
+	private static Logger LOG = LoggerFactory.getLogger(SearchApiController.class);
 
 
 	@Autowired
