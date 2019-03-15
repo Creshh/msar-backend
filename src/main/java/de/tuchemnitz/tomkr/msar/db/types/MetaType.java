@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.core.registry.types;
+package de.tuchemnitz.tomkr.msar.db.types;
 
 import java.util.ArrayList;
 import java.util.List;

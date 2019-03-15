@@ -49,6 +49,9 @@ public class Config {
 	@Value("${metaSchema.resource}")
 	private String metaSchemaRes;
 	
+	@Value("${suggestion.fuzzy}")
+	private boolean fuzzySuggestion;
+	
 	private Client client;
 
 	@Bean
@@ -97,5 +100,9 @@ public class Config {
 	
 	public String getMetaSchemaRes() {
 		return metaSchemaRes;
+	}
+
+	public boolean getFuzzySuggestion() {
+		return fuzzySuggestion;
 	}
 }

@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.tuchemnitz.tomkr.msar.core.registry.types.MetaType;
 import de.tuchemnitz.tomkr.msar.db.FieldRepository;
 import de.tuchemnitz.tomkr.msar.db.MetaTypeRepository;
+import de.tuchemnitz.tomkr.msar.db.types.MetaType;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 /**
@@ -28,7 +28,7 @@ public class MetaTypeService {
 
 	private static Logger LOG = LoggerFactory.getLogger(MetaTypeService.class);
 
-	private static final String TYPE_META_SCHEMA = "meta_schema";
+	public static final String TYPE_META_SCHEMA = "meta_schema";
 
 	@Autowired
 	private MetaTypeRepository metaTypeRepo;

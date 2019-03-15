@@ -12,8 +12,8 @@ import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.core.registry.DataTypeMapper;
 import de.tuchemnitz.tomkr.msar.core.registry.MappingBuilder;
 import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
-import de.tuchemnitz.tomkr.msar.core.registry.types.Field;
-import de.tuchemnitz.tomkr.msar.core.registry.types.MetaType;
+import de.tuchemnitz.tomkr.msar.db.types.Field;
+import de.tuchemnitz.tomkr.msar.db.types.MetaType;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 /**
@@ -44,6 +44,11 @@ public class SchemaHandler {
 	private static final String TYPE = "type";
 	private static final String PROPERTIES = "properties";
 	private static final String TAG = "tag";
+	private static final String ARRAY = "array";
+	private static final String ITEMS = "items";
+	//private static final String FILTER = "filter"; // TODO: add "field" to schema and store it in db with datatype; add service to get all fields for frontend to build filters automatically
+
+	
 	
 	/**
 	 * 
@@ -76,7 +81,8 @@ public class SchemaHandler {
 			for (String key : properties.keySet()) {
 				JSONObject field = properties.getJSONObject(key);
 				
-				String dataType = dataTypeMapper.map(field.getString(TYPE));
+				String sourceType = getSourceType(field);
+				String dataType = dataTypeMapper.map(sourceType);
 				if(dataType == null) {
 					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(TYPE)));
 					return false;
@@ -99,5 +105,14 @@ public class SchemaHandler {
 		metaTypeService.addType(metaType);
 		
 		return true;
+	}
+	
+	private String getSourceType(JSONObject field) {
+		String sourceType = field.getString(TYPE);
+		if(sourceType.equals(ARRAY)) {
+			JSONObject subField = field.getJSONObject(ITEMS);
+			sourceType = getSourceType(subField);
+		}
+		return sourceType;
 	}
 }

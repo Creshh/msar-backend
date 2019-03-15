@@ -1,8 +1,8 @@
 {
-	"$id": "https://tu-chemnitz.de/tomkr.meta.exif",
+	"$id": "https://tu-chemnitz.de/tomkr.meta.location",
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "EXIF",
-	"description": "EXIF image metadata",
+	"title": "Location",
+	"description": "Location data in address and/or coordinate format",
 	"type": "object",
 	"properties": {
 		"id": {
@@ -25,60 +25,48 @@
 			"description": "Free text field for storing raw and additional data",
 			"type": "string"
 		},
-		"xdim": {
-			"type": "integer"
+		"latitude": {
+			"type": "number"
 		},
-		"ydim": {
-			"type": "integer"
+		"longitude": {
+			"type": "number"
 		},
-		"datetime": {
+		"country": {
+			"tag": true,
 			"type": "string"
 		},
-		"datetimeoriginal": {
+		"city": {
+			"tag": true,
 			"type": "string"
 		},
-		"manufacturer": {
+		"street": {
+			"tag": true,
 			"type": "string"
 		},
-		"model": {
-			"type": "string"
-		},
-		"lens": {
-			"type": "string"
-		},
-		"orientation": {
-			"type": "string"
-		},
-		"compression": {
-			"type": "string"
-		},
-		"fnumber": {
-			"type": "string"
-		},
-		"exposuretime": {
-			"type": "string"
-		},
-		"isospeed": {
-			"type": "string"
-		},
-		"meteringmode": {
-			"type": "string"
-		},
-		"focallength": {
-			"type": "string"
-		},
-		"flash": {
+		"number": {
 			"type": "string"
 		}
 	},
 	"required": [
 		"reference",
 		"type",
-		"source",
-		"xdim",
-		"ydim",
-		"orientation",
-		"datetime"
+		"source"
+	],
+	"anyOf": [
+		{
+			"required": [
+				"latitude",
+				"longitude"
+			]
+		},
+		{
+			"required": [
+				"country",
+				"city",
+				"street",
+				"number"
+			]
+		}
 	],
 	"additionalProperties": false
 }

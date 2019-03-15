@@ -30,6 +30,11 @@ public class IndexFunctions {
 		return response.isExists();
 	}
 
+	public void cleanIndex(String index) {
+		deleteIndex(index);
+		ensureIndex(index);
+	}
+	
 	public void ensureIndex(String index) {
 		boolean exists = checkIndex(index);
 		if (!exists) {

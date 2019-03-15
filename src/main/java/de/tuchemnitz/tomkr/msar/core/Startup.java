@@ -21,7 +21,7 @@ public class Startup {
 	IndexFunctions indexFunctions;
 	
 	@Autowired
-	MetaTypeService typeRegistry;
+	MetaTypeService typeService;
 	
 	@Autowired
 	Config config;
@@ -40,7 +40,7 @@ public class Startup {
 		String json = Helpers.readResource(config.getMetaSchemaRes());
 		
 		if (json != null) {
-			typeRegistry.addMetaSchema(json);
+			typeService.addMetaSchema(json);
 		} else {
 			LOG.error(String.format("MetaSchema [%s] could not be found!", config.getMetaSchemaRes()));
 		}

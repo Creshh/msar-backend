@@ -1,6 +1,5 @@
 package de.tuchemnitz.tomkr.msar.api;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import de.tuchemnitz.tomkr.msar.api.data.SuggestCategory;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
+import de.tuchemnitz.tomkr.msar.utils.TestDataGenerator;
 
 
 
@@ -35,17 +35,27 @@ public class RestControllerImpl {
 	@Autowired
 	DocumentHandler documentHandler;
 
-	@RequestMapping("/")
-	public String index() {
-		LOG.debug("API Index");
-		return "API Index";
-	}
-
-
+	@Autowired
+	TestDataGenerator testDataGenerator;
+	
+	@GetMapping("/generateTestData")
+	public boolean generateTestData(String apiCode) {
+		LOG.debug("############################ Generate Test Data ############################");
+		
+		if(!testDataGenerator.checkPermission(apiCode)) {
+			LOG.debug("No permission");
+			return false;
+		}
+		
+		testDataGenerator.generateData();
+		
+		LOG.debug("################################# Finished #################################");
+		return true;
+	}	
 	
 	@GetMapping("/suggest")
 	public Map<String, SuggestCategory> suggest(String prefix) {
-		LOG.debug(String.format("[/v1/suggest]: [%s]", prefix));
+//		LOG.debug(String.format("[/api/suggest]: [%s]", prefix));
 		return queryFunctions.getSuggestions(prefix);
 	}
 
@@ -69,17 +79,15 @@ public class RestControllerImpl {
 		return queryFunctions.matchByRange(lower, upper, field);
 	}
 
-
 	@PostMapping("/addType")
 	public boolean addType(@RequestParam String type, @RequestBody String schema) {
-		LOG.debug(String.format("[/v1/addType]: [%s] \n------------------------\n%s\n------------------------", type, schema));
+		LOG.debug(String.format("[/api/addType]: [%s] \n------------------------\n%s\n------------------------", type, schema));
 		return schemaHandler.registerSchema(type, schema);
 	}
 
-
 	@PostMapping("/addDocument")
 	public boolean addDocument(@RequestBody String document) {
-		LOG.debug(String.format("[/v1/addDocument]: \n%s\n------------------------", document));
+		LOG.debug(String.format("[/api/addDocument]: \n%s\n------------------------", document));
 		return documentHandler.addDocument(document);
 	}
 }
