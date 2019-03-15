@@ -10,6 +10,7 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonHelpers {
@@ -49,5 +50,14 @@ public class JsonHelpers {
 			LOG.error(String.format("Error reading json"), e);
 		}
 		return result;
+	}
+
+	public static String mapToString(Map<String, Object> result) {
+		try {
+			return new ObjectMapper().writeValueAsString(result);
+		} catch (JsonProcessingException e) {
+			LOG.error(String.format("Error writing json"), e);
+		}
+		return null;
 	}
 }

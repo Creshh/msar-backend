@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.core.registry.types;
+package de.tuchemnitz.tomkr.msar.db.types;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

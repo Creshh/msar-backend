@@ -103,7 +103,7 @@ public class QueryFunctions {
 			completionSuggestBuilder.skipDuplicates(true); // when skipDuplicates = false, suggestions will be
 															// duplicated for example in case of arrays with multiple
 															// entries
-			completionSuggestBuilder.prefix(value, Fuzziness.AUTO);
+			completionSuggestBuilder.prefix(value, config.getFuzzySuggestion() ? Fuzziness.AUTO : Fuzziness.ZERO);
 			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
 		}
 
@@ -113,15 +113,15 @@ public class QueryFunctions {
 
 		for (String field : fields) {
 			CompletionSuggestion fieldSuggestion = suggest.getSuggestion(String.format(SUGGEST_FORMAT, field));
-			LOG.debug(String.format("Suggestion queried for [%s] in field [%s]", value, String.format("%s.completion", field)));
+//			LOG.debug(String.format("Suggestion queried for [%s] in field [%s]", value, String.format("%s.completion", field)));
 			for (CompletionSuggestion.Entry entry : fieldSuggestion.getEntries()) {
 				for (Option option : entry.getOptions()) {
 					if(result.get(field) == null) {
 						result.put(field, new SuggestCategory(field));
 					}
 					String suggestion = option.getText().string();
-					LOG.debug("> suggestion: " + suggestion + " for Doc: " + option.getHit().getSourceAsMap().get(FIELD_REFERENCE) + " ["
-							+ option.getHit().getId() + "]");
+//					LOG.debug("> suggestion: " + suggestion + " for Doc: " + option.getHit().getSourceAsMap().get(FIELD_REFERENCE) + " ["
+//							+ option.getHit().getId() + "]");
 
 					result.get(field).getResults().add(new SuggestItem(suggestion));
 				}
