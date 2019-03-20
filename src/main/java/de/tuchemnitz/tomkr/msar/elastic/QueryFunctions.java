@@ -79,17 +79,9 @@ public class QueryFunctions {
 		return search(QueryBuilders.rangeQuery(field).from(lower, true).to(upper, true), indices);
 	}
 
-	public List<String> searchByValue(String value, String... indices) {
+	public List<Map<String, Object>> searchByValue(String value, String... indices) {
 		LOG.debug(String.format("Search of [%s] in all fields", value));
-		
-		List<Map<String, Object>> results = search(QueryBuilders.queryStringQuery(value), indices);
-		
-		List<String> result = new ArrayList<>();
-		for(Map<String, Object> entry : results) {
-			result.add((String) entry.get(FIELD_REFERENCE));
-		}
-		
-		return result;
+		return search(QueryBuilders.queryStringQuery(value), indices);
 	}
 
 	public Map<String, SuggestCategory> getSuggestions(String value) {
