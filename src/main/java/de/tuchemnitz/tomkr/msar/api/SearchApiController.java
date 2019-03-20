@@ -62,7 +62,7 @@ public class SearchApiController {
 
 
 	@GetMapping("/search/query")
-	public List<Map<String, Object>> search(String query) {
+	public List<String> search(String query) {
 		return queryFunctions.searchByValue(query);
 	}
 
