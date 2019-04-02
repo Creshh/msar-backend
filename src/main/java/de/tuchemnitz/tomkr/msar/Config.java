@@ -52,6 +52,9 @@ public class Config {
 	@Value("${suggestion.fuzzy}")
 	private boolean fuzzySuggestion;
 	
+	@Value("${storage.base}")
+	private String storageBase;
+	
 	private Client client;
 
 	@Bean
@@ -104,5 +107,9 @@ public class Config {
 
 	public boolean getFuzzySuggestion() {
 		return fuzzySuggestion;
+	}
+	
+	public String getStorageBase() {
+		return storageBase;
 	}
 }
