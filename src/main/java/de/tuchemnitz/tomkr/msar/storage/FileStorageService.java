@@ -1,5 +1,6 @@
 package de.tuchemnitz.tomkr.msar.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -51,14 +52,28 @@ public class FileStorageService {
         }
     }
 
-    public void storeFile(String fileName, MultipartFile file) {
+    public boolean storeFile(String fileName, File file) {
+        try {
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.toPath(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            LOG.error("Could not store file " + fileName + ". Please try again!", ex);
+            return false;
+        }
+        return true;
+    }
+	
+    public boolean storeFile(String fileName, MultipartFile file) {
         try {
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            LOG.error("Could not store file " + fileName + ". Please try again!", ex);
+            return false;
         }
+        return true;
     }
 
     public Resource loadFileAsResource(String fileName) {

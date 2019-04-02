@@ -1,5 +1,7 @@
 package de.tuchemnitz.tomkr.msar.storage;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,33 @@ public class AssetService {
 	@Autowired
 	FileStorageService storageService;
 
+	public Asset storeFile(File file) {
+		// Normalize file name
+		String fileName = file.getName();
+		
+		// Check if the file's name contains invalid characters
+		if (fileName.contains("..") || file.isDirectory()) {
+			LOG.error("Sorry! Filename contains invalid path sequence " + fileName + " or file is directory");
+			return null;
+		}
+		LOG.debug(fileName + " - " + fileName.split("\\.")[1]);
+		String type = fileName.split("\\.")[1];
+		Asset asset = new Asset(fileName, type);
+
+		assetRepo.save(asset);
+		
+		boolean success = storageService.storeFile(String.format("%d.%s", asset.getId(), type), file);
+		
+		if(!success) {
+			LOG.error("Couldn't store file!");
+			assetRepo.delete(asset);
+			return null;
+		}
+		
+		return asset;
+	}
+	
+	
 	public Asset storeFile(MultipartFile file) {
 		// Normalize file name
 		String fileName = file.getOriginalFilename();
@@ -31,27 +60,30 @@ public class AssetService {
 			return null;
 		}
 		LOG.debug(file.getOriginalFilename() + " - " + file.getContentType());
-		String id = fileName.split("\\.")[0]; // dot is contained in filename but won't split
 		String type = fileName.split("\\.")[1];
-		Asset asset = new Asset(id, fileName, type);
+		Asset asset = new Asset(fileName, type);
 
-		// handle exisiting ids / overwrite
-		
-		storageService.storeFile(String.format("%s.%s", id, type), file);
-		
 		assetRepo.save(asset);
+		
+		boolean success = storageService.storeFile(String.format("%d.%s", asset.getId(), type), file);
+		
+		if(!success) {
+			LOG.error("Couldn't store file!");
+			assetRepo.delete(asset);
+			return null;
+		}
+		
 		return asset;
 	}
 
-	public Resource loadFileAsResource(String id) {
-		
-		Asset asset = assetRepo.findByIdentifier(id);
+	public Resource loadFileAsResource(long id) {
+		Asset asset = assetRepo.findById(id).get();
 		if(asset == null) {
 			LOG.error(String.format("Identifier %s not found!", id));
 			return null;
 		}
 		
-		return storageService.loadFileAsResource(String.format("%s.%s", asset.getIdentifier(), asset.getDataType()));
+		return storageService.loadFileAsResource(String.format("%s.%s", asset.getId(), asset.getDataType()));
 	}
 
 }

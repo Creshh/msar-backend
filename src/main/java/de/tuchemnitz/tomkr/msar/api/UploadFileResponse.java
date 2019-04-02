@@ -1,23 +1,23 @@
 package de.tuchemnitz.tomkr.msar.api;
 
 public class UploadFileResponse {
-    private String id;
+    private long id;
     private String fileUri;
     private String fileType;
     private long size;
 
-    public UploadFileResponse(String id, String fileUri, String fileType, long size) {
+    public UploadFileResponse(long id, String fileUri, String fileType, long size) {
         this.id = id;
         this.fileUri = fileUri;
         this.fileType = fileType;
         this.size = size;
     }
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

@@ -1,21 +1,22 @@
 package de.tuchemnitz.tomkr.msar.db.types;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Asset {
 
-	@Id
-	private String identifier;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
 	
 	private String originalFileName;
 	private String dataType;
 
 	public Asset() {}
 
-	public Asset(String identifier, String originalFileName, String dataType) {
-		this.identifier = identifier;
+	public Asset(String originalFileName, String dataType) {
 		this.originalFileName = originalFileName;
 		this.dataType = dataType;
 	}
@@ -36,7 +37,7 @@ public class Asset {
 		this.dataType = dataType;
 	}
 
-	public String getIdentifier() {
-		return identifier;
+	public long getId() {
+		return id;
 	}
 }

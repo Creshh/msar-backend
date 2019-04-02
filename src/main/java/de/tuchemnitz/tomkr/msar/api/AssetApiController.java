@@ -1,17 +1,12 @@
 package de.tuchemnitz.tomkr.msar.api;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
 
@@ -38,35 +32,32 @@ public class AssetApiController {
 
 	private static Logger LOG = LoggerFactory.getLogger(AssetApiController.class);
 
-	@Autowired
-	private Config config;
-	
     @Autowired
     private AssetService assetService;
 	
-	@GetMapping("/get/{reference}")
-	public void getImageAsByteArray(@PathVariable("reference") String reference, HttpServletResponse response)
-			throws IOException {
-		InputStream in = FileUtils.openInputStream(new File(config.getStorageBase() + "/" + reference));
-		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		IOUtils.copy(in, response.getOutputStream());
-	}
+//	@GetMapping("/get/{reference}")
+//	public void getImageAsByteArray(@PathVariable("reference") String reference, HttpServletResponse response)
+//			throws IOException {
+//		InputStream in = FileUtils.openInputStream(new File(config.getStorageBase() + "/" + reference));
+//		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+//		IOUtils.copy(in, response.getOutputStream());
+//	}
 	
     
-    @PostMapping("/uploadFile")
+    @PostMapping("/upload")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
         Asset asset = assetService.storeFile(file);
 
         String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/getAsset/")
-                .path(String.valueOf(asset.getIdentifier()))
+                .path("assets/get/")
+                .path(String.valueOf(asset.getId()))
                 .toUriString();
 
-        return new UploadFileResponse(asset.getIdentifier(), fileUri,
+        return new UploadFileResponse(asset.getId(), fileUri,
                 file.getContentType(), file.getSize());
     }
 
-    @PostMapping("/uploadMultipleFiles")
+    @PostMapping("/uploadMultiple")
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
@@ -74,8 +65,8 @@ public class AssetApiController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/getAsset/{id}")
-    public ResponseEntity<Resource> getAsset(@PathVariable String id, HttpServletRequest request) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Resource> getAsset(@PathVariable long id, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = assetService.loadFileAsResource(id);
 
@@ -94,7 +85,8 @@ public class AssetApiController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"") // download
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline") // inline
                 .body(resource);
     }
 }
