@@ -4,8 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
 
-public interface AssetRepository extends JpaRepository<Asset, Integer>{
+public interface AssetRepository extends JpaRepository<Asset, Long>{
 
-	Asset findByIdentifier(String identifier);
-	
 }

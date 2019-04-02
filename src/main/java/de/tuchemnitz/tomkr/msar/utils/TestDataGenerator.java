@@ -31,8 +31,10 @@ import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 import de.tuchemnitz.tomkr.msar.db.MetaTypeRepository;
+import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.db.types.MetaType;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
+import de.tuchemnitz.tomkr.msar.storage.AssetService;
 
 @Service
 public class TestDataGenerator {
@@ -48,6 +50,9 @@ public class TestDataGenerator {
 	
 	@Autowired
 	MetaTypeRepository metaRepo;
+	
+	@Autowired
+	AssetService assetService;
 
 	@Autowired
 	Config config;
@@ -89,13 +94,16 @@ public class TestDataGenerator {
 	}
 
 	private void handleImage(File image) {
+		
+		Asset asset = assetService.storeFile(image);				
+		
 		Map<String, Object> exif = readEXIF(image);
 		Map<String, Object> loc = generateLocation(image);
 		Map<String, Object> obj = generateObjects(image, (int) exif.get("xdim"), (int) exif.get("ydim"));
 
-		docHandler.addDocument(JsonHelpers.mapToString(exif));
-		docHandler.addDocument(JsonHelpers.mapToString(loc));
-		docHandler.addDocument(JsonHelpers.mapToString(obj));
+		docHandler.addDocument(JsonHelpers.mapToString(exif), String.valueOf(asset.getId()));
+		docHandler.addDocument(JsonHelpers.mapToString(loc), String.valueOf(asset.getId()));
+		docHandler.addDocument(JsonHelpers.mapToString(obj), String.valueOf(asset.getId()));
 	}
 	
 	

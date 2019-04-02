@@ -33,6 +33,10 @@ public class DocumentHandler {
 	private Validator validator;
 
 	public boolean addDocument(String json) {
+		return addDocument(json, null);
+	}
+	
+	public boolean addDocument(String json, String reference) {
 		// read
 		JSONObject docObj = JsonHelpers.loadJSON(json);
 		Map<String, Object> doc = JsonHelpers.readJsonToMap(json);
@@ -52,6 +56,11 @@ public class DocumentHandler {
 		if (!valid) {
 			LOG.error("Schema not valid, check errors!");
 			return false;
+		}
+		
+		// reset reference
+		if(reference != null) {
+			doc.put("reference", reference);
 		}
 
 		// index
