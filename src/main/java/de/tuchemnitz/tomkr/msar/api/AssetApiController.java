@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
+import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
 @RequestMapping("assets")
@@ -65,10 +67,11 @@ public class AssetApiController {
                 .collect(Collectors.toList());
     }
 
+    
     @GetMapping("/get/{id}")
-    public ResponseEntity<Resource> getAsset(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<Resource> getAsset(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, HttpServletRequest request) {
         // Load file as Resource
-        Resource resource = assetService.loadFileAsResource(id);
+        Resource resource = assetService.loadFileAsResource(id, thumb);
 
         // Try to determine file's content type
         String contentType = null;
@@ -83,6 +86,9 @@ public class AssetApiController {
             contentType = "application/octet-stream";
         }
 
+//        response.setContentType(contentType);
+//        Thumbnails.of(resource.getInputStream()).size(400, 400).toOutputStream(response.getOutputStream());
+        
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
 //                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"") // download
