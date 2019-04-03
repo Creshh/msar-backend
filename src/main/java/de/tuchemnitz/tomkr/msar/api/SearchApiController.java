@@ -2,10 +2,8 @@ package de.tuchemnitz.tomkr.msar.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -19,19 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.tuchemnitz.tomkr.msar.api.data.SuggestCategory;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
-import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 import de.tuchemnitz.tomkr.msar.utils.TestDataGenerator;
 
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("doc")
 public class SearchApiController {
 	private static Logger LOG = LoggerFactory.getLogger(SearchApiController.class);
 
@@ -65,22 +61,22 @@ public class SearchApiController {
 	
 	@GetMapping("/suggest")
 	public Map<String, SuggestCategory> suggest(String prefix) {
-//		LOG.debug(String.format("[/api/suggest]: [%s]", prefix));
+		LOG.debug(String.format("[/api/suggest]: [%s]", prefix));
 		return queryFunctions.getSuggestions(prefix);
 	}
 
 
-	@GetMapping("/search/query")
+	@GetMapping("/query")
 	public List<Map<String, Object>> search(String query) {
 		return queryFunctions.searchByValue(query);
 	}
 
-	@GetMapping("/search/field")
+	@GetMapping("/field")
 	public List<Map<String,Object>> search(String value, String field) {
 		return queryFunctions.matchByValue(value, field);
 	}
 
-	@GetMapping("/search/range")
+	@GetMapping("/range")
 	public List<Map<String,Object>> search(double lower, double upper, String field) {
 //		if(!(lower instanceof Number && upper instanceof Number)) {
 //			LOG.error("Wrong datatype, numbers expected");
@@ -89,19 +85,19 @@ public class SearchApiController {
 		return queryFunctions.matchByRange(lower, upper, field);
 	}
 
-	@PostMapping("/addType")
+	@PostMapping("type/add")
 	public boolean addType(@RequestParam String type, @RequestBody String schema) {
 		LOG.debug(String.format("[/api/addType]: [%s] \n------------------------\n%s\n------------------------", type, schema));
 		return schemaHandler.registerSchema(type, schema);
 	}
 
-	@PostMapping("/addDocument")
+	@PostMapping("/addJson")
 	public boolean addDocument(@RequestBody String document, String reference) {
 		LOG.debug(String.format("[/api/addDocument] for [%s]: \n%s\n------------------------", reference,  document));
 		return documentHandler.addDocument(document, reference);
 	}
 	
-	@PostMapping("/addDocumentFromFile")
+	@PostMapping("/add")
 	public boolean addDocumentFromFile(@RequestParam("file") MultipartFile file, String reference) {
 		LOG.debug(String.format("[/api/addDocument]: \n------------------------"));
 		
@@ -121,13 +117,4 @@ public class SearchApiController {
 		
 		return documentHandler.addDocument(document, reference);
 	}
-	
-
-    @PostMapping("/addDocumentFromFileMultiple")
-    public List<Boolean> addDocumentFromFileMultiple(@RequestParam("files") MultipartFile[] files, String reference) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> addDocumentFromFile(file, reference))
-                .collect(Collectors.toList());
-    }
 }

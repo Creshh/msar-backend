@@ -1,12 +1,8 @@
 package de.tuchemnitz.tomkr.msar.api;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
-import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
 @RequestMapping("assets")
@@ -37,15 +33,7 @@ public class AssetApiController {
     @Autowired
     private AssetService assetService;
 	
-//	@GetMapping("/get/{reference}")
-//	public void getImageAsByteArray(@PathVariable("reference") String reference, HttpServletResponse response)
-//			throws IOException {
-//		InputStream in = FileUtils.openInputStream(new File(config.getStorageBase() + "/" + reference));
-//		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-//		IOUtils.copy(in, response.getOutputStream());
-//	}
-	
-    
+//    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/upload")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
         Asset asset = assetService.storeFile(file);
@@ -58,15 +46,6 @@ public class AssetApiController {
         return new UploadFileResponse(asset.getId(), fileUri,
                 file.getContentType(), file.getSize());
     }
-
-    @PostMapping("/uploadMultiple")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
-    }
-
     
     @GetMapping("/get/{id}")
     public ResponseEntity<Resource> getAsset(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, HttpServletRequest request) {
@@ -85,9 +64,6 @@ public class AssetApiController {
         if(contentType == null) {
             contentType = "application/octet-stream";
         }
-
-//        response.setContentType(contentType);
-//        Thumbnails.of(resource.getInputStream()).size(400, 400).toOutputStream(response.getOutputStream());
         
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
