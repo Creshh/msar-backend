@@ -1,4 +1,4 @@
-package de.tuchemnitz.tomkr.msar.api;
+package de.tuchemnitz.tomkr.msar.api.data;
 
 public class UploadFileResponse {
     private long id;

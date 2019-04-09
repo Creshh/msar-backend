@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import de.tuchemnitz.tomkr.msar.api.data.UploadFileResponse;
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
 
@@ -35,7 +36,7 @@ public class AssetApiController {
 	
 //    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/upload")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public UploadFileResponse upload(@RequestParam("file") MultipartFile file) {
         Asset asset = assetService.storeFile(file);
 
         String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -48,7 +49,7 @@ public class AssetApiController {
     }
     
     @GetMapping("/get/{id}")
-    public ResponseEntity<Resource> getAsset(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, HttpServletRequest request) {
+    public ResponseEntity<Resource> get(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = assetService.loadFileAsResource(id, thumb);
 
