@@ -26,7 +26,7 @@ import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
 
 @RestController
-@RequestMapping("assets")
+@RequestMapping("api/assets")
 public class AssetApiController {
 
 	private static Logger LOG = LoggerFactory.getLogger(AssetApiController.class);

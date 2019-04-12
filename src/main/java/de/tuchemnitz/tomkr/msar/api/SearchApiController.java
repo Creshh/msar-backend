@@ -15,7 +15,7 @@ import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 
 
 @RestController
-@RequestMapping("search")
+@RequestMapping("api/search")
 public class SearchApiController {
 	private static Logger LOG = LoggerFactory.getLogger(SearchApiController.class);
 

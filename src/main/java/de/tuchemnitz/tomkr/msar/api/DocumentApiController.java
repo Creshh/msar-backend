@@ -23,7 +23,7 @@ import de.tuchemnitz.tomkr.msar.utils.TestDataGenerator;
 
 
 @RestController
-@RequestMapping("doc")
+@RequestMapping("api/doc")
 public class DocumentApiController {
 	private static Logger LOG = LoggerFactory.getLogger(DocumentApiController.class);
 
