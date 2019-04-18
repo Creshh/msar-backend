@@ -1,5 +1,7 @@
 package de.tuchemnitz.tomkr.msar.core;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.everit.json.schema.Schema;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
+import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 /**
@@ -24,18 +27,21 @@ public class DocumentHandler {
 	private static Logger LOG = LoggerFactory.getLogger(DocumentHandler.class);
 
 	@Autowired
+	QueryFunctions queryFunctions;
+
+	@Autowired
 	private MetaTypeService typeRegistry;
 
 	@Autowired
 	private DocumentFunctions docFunctions;
-	
+
 	@Autowired
 	private Validator validator;
 
 	public boolean addDocument(String json) {
 		return addDocument(json, null);
 	}
-	
+
 	public boolean addDocument(String json, String reference) {
 		// read
 		JSONObject docObj = JsonHelpers.loadJSON(json);
@@ -57,9 +63,9 @@ public class DocumentHandler {
 			LOG.error("Schema not valid, check errors!");
 			return false;
 		}
-		
+
 		// reset reference
-		if(reference != null) {
+		if (reference != null) {
 			doc.put("reference", reference);
 		}
 
@@ -68,9 +74,18 @@ public class DocumentHandler {
 
 		return true;
 	}
-	
+
 	public boolean deleteDocument(String type, String reference) {
 //		docFunctions.deleteDocument();
 		return true;
+	}
+
+	public Map<String, Object> getDocuments(String reference) {
+		Map<String, Object> result = new HashMap<>();
+		List<String> types = typeRegistry.getAllTypes();
+		for (String type : types) {
+			result.put(type, queryFunctions.getDocument(reference, type));
+		}
+		return result;
 	}
 }

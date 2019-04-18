@@ -44,6 +44,14 @@ public class MetaTypeService {
 	public boolean contains(String type) {
 		return (metaTypeRepo.findByName(type) != null);
 	}
+	
+	public List<String> getAllTypes(){
+		List<String> result = new ArrayList<>();
+		metaTypeRepo.findAll().forEach(e -> {
+			if(!e.getType().equals(TYPE_META_SCHEMA)) result.add(e.getType());
+			});
+		return result;
+	}
 
 	public List<String> getAllFields() {
 		List<String> result = new ArrayList<>();
