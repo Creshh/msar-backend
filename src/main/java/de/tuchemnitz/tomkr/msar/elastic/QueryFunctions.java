@@ -45,6 +45,7 @@ public class QueryFunctions {
 	private static Logger LOG = LoggerFactory.getLogger(QueryFunctions.class);
 
 	private static final String FIELD_REFERENCE = "reference";
+	private static final String FIELD_TYPE = "type";
 	private static final String SUGGEST_FORMAT = "%s_suggest";
 
 	@Autowired
@@ -82,6 +83,18 @@ public class QueryFunctions {
 	public List<Map<String, Object>> searchByValue(String value, String... indices) {
 		LOG.debug(String.format("Search of [%s] in all fields", value));
 		return search(QueryBuilders.queryStringQuery(value), indices);
+	}
+	
+	public Map<String, Object> getDocument(String reference, String type, String... indices){
+		List<Map<String, Object>> result = search(QueryBuilders.boolQuery()
+				.must(QueryBuilders.termQuery(FIELD_REFERENCE, reference))
+				.must(QueryBuilders.termQuery(FIELD_TYPE, type)), indices);
+		
+		if(result != null && !result.isEmpty()) {
+			return result.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	public Map<String, SuggestCategory> getSuggestions(String value) {
@@ -169,5 +182,4 @@ public class QueryFunctions {
 		}
 		return result;
 	}
-
 }
