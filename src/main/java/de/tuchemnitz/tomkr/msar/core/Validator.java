@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import de.tuchemnitz.tomkr.msar.utils.Result;
+
 /**
  * 
  * @author Kretzschmar
@@ -18,7 +20,7 @@ public class Validator {
 	private static Logger LOG = LoggerFactory.getLogger(Validator.class);
 
 	
-	public boolean checkDocument(Schema schema, JSONObject document) {
+	public Result checkDocument(Schema schema, JSONObject document) {
 		try {
 			schema.validate(document);
 		} catch (ValidationException e) {
@@ -31,8 +33,8 @@ public class Validator {
 			System.out.println(e.toJSON().toString(4));
 
 			System.out.println("######################");
-			return false;
+			return new Result(false, e.getMessage());
 		}
-		return true;
+		return new Result(true, null);
 	}
 }

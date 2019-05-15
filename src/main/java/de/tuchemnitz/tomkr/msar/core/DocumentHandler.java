@@ -15,6 +15,7 @@ import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
 import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
+import de.tuchemnitz.tomkr.msar.utils.Result;
 
 /**
  * 
@@ -38,11 +39,11 @@ public class DocumentHandler {
 	@Autowired
 	private Validator validator;
 
-	public boolean addDocument(String json) {
+	public Result addDocument(String json) {
 		return addDocument(json, null);
 	}
 
-	public boolean addDocument(String json, String reference) {
+	public Result addDocument(String json, String reference) {
 		// read
 		JSONObject docObj = JsonHelpers.loadJSON(json);
 		Map<String, Object> doc = JsonHelpers.readJsonToMap(json);
@@ -50,20 +51,28 @@ public class DocumentHandler {
 		String type = (String) doc.get("type");
 		if (type == null) {
 			LOG.error("No type defined!");
-			return false;
+			return new Result(false, "No type defined!");
 		}
 		Schema schema = typeRegistry.getSchema(type);
 		if (schema == null) {
 			LOG.error(String.format("No schema for type [%s] found, register schema first!", type));
-			return false;
+			return new Result(false, String.format("No schema for type [%s] found, register schema first!", type));
 		}
 
-		boolean valid = validator.checkDocument(schema, docObj);
-		if (!valid) {
-			LOG.error("Schema not valid, check errors!");
-			return false;
+		Result validation = validator.checkDocument(schema, docObj);
+		if (!validation.isSuccess()) {
+			LOG.error("Validation failed!");
+			return new Result(false, "Validation failed: " + validation.getMsg()); // Todo: add "additional" to result and return it. "Show more" in message box; hide message box only when closed manually
 		}
 
+		// check duplicate
+		List<Map<String, Object>> docs = queryFunctions.getDocuments(reference, type);
+		for(Map<String, Object> indexedDoc : docs) {
+			if(indexedDoc.get("source").equals(doc.get("source"))) {
+				return new Result(false, "Document of same type with same source already indexed - upload skipped!"); // maybe extract to different function "check duplicate" and ask user if it should be overwritten
+			}
+		}
+		
 		// reset reference
 		if (reference != null) {
 			doc.put("reference", reference);
@@ -72,7 +81,7 @@ public class DocumentHandler {
 		// index
 		docFunctions.indexDocument(doc);
 
-		return true;
+		return new Result(true, null);
 	}
 
 	public boolean deleteDocument(String type, String reference) {
@@ -82,9 +91,9 @@ public class DocumentHandler {
 
 	public Map<String, Object> getDocuments(String reference) {
 		Map<String, Object> result = new HashMap<>();
-		List<String> types = typeRegistry.getAllTypes();
+		List<String> types = typeRegistry.getAllTypeNames();
 		for (String type : types) {
-			result.put(type, queryFunctions.getDocument(reference, type));
+			result.put(type, queryFunctions.getDocuments(reference, type));
 		}
 		return result;
 	}

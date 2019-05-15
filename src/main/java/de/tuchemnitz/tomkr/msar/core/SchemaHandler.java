@@ -15,6 +15,7 @@ import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 import de.tuchemnitz.tomkr.msar.db.types.Field;
 import de.tuchemnitz.tomkr.msar.db.types.MetaType;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
+import de.tuchemnitz.tomkr.msar.utils.Result;
 
 /**
  * 
@@ -64,9 +65,9 @@ public class SchemaHandler {
 		}
 
 		JSONObject schemaRoot = JsonHelpers.loadJSON(schemaJSON);
-		boolean valid = validator.checkDocument(metaTypeService.getMetaSchema(), schemaRoot);
+		Result validation = validator.checkDocument(metaTypeService.getMetaSchema(), schemaRoot);
 
-		if (!valid) {
+		if (!validation.isSuccess()) {
 			LOG.error("Given schema is not valid!");
 			return false;
 		}

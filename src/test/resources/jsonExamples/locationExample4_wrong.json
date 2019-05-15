@@ -1,0 +1,10 @@
+{
+    "reference": "path/to/example/image7.jpg",
+	"type": "location",
+	"source": "user",
+	"raw": "",
+	"longitude": 24.65444,
+	"city": "Dresden",
+	"street": "Prager Strasse",
+	"bla" : "fff" 
+}

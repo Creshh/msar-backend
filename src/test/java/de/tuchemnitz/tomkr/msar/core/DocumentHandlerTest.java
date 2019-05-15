@@ -24,6 +24,7 @@ import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
+import de.tuchemnitz.tomkr.msar.utils.Result;
 
 
 @RunWith(SpringRunner.class)
@@ -98,8 +99,8 @@ public class DocumentHandlerTest {
 				}
 			}
 		}
-		boolean result = documentHandler.addDocument(json);
+		Result result = documentHandler.addDocument(json);
 		
-		assertTrue(result);
+		assertTrue(result.isSuccess());
 	}
 }
