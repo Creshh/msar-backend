@@ -85,13 +85,13 @@ public class QueryFunctions {
 		return search(QueryBuilders.queryStringQuery(value), indices);
 	}
 	
-	public Map<String, Object> getDocument(String reference, String type, String... indices){
-		List<Map<String, Object>> result = search(QueryBuilders.boolQuery()
+	public List<Map<String, Object>> getDocuments(String reference, String type, String... indices){
+		List<Map<String, Object>> results = search(QueryBuilders.boolQuery()
 				.must(QueryBuilders.termQuery(FIELD_REFERENCE, reference))
 				.must(QueryBuilders.termQuery(FIELD_TYPE, type)), indices);
 		
-		if(result != null && !result.isEmpty()) {
-			return result.get(0);
+		if(results != null && !results.isEmpty()) {
+			return results;
 		} else {
 			return null;
 		}

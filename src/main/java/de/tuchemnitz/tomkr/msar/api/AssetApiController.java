@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +49,7 @@ public class AssetApiController {
     }
     
     @GetMapping("/get/{id}")
-    public ResponseEntity<Resource> get(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, HttpServletRequest request) {
+    public ResponseEntity<Resource> get(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, @RequestParam(name = "dl", defaultValue = "false") boolean dl, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = assetService.loadFileAsResource(id, thumb);
 
@@ -65,10 +66,13 @@ public class AssetApiController {
             contentType = "application/octet-stream";
         }
         
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"") // download
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline") // inline
-                .body(resource);
+        BodyBuilder builder = ResponseEntity.ok();
+        builder.contentType(MediaType.parseMediaType(contentType));
+        if(dl) {
+        	builder.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\""); // download
+        } else {
+        	builder.header(HttpHeaders.CONTENT_DISPOSITION, "inline"); // inline
+        }
+        return builder.body(resource);
     }
 }

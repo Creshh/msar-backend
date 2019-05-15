@@ -74,7 +74,7 @@ public class TestDataGenerator {
 //		metaRepo.deleteAll();
 		List<MetaType> metaTypes = metaRepo.findAll();
 		for(MetaType metaType : metaTypes) {
-			if(!metaType.getType().equals(MetaTypeService.TYPE_META_SCHEMA)) {
+			if(!metaType.getName().equals(MetaTypeService.TYPE_META_SCHEMA)) {
 				metaRepo.delete(metaType);
 			}
 		}

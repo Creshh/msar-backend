@@ -1,7 +1,9 @@
 package de.tuchemnitz.tomkr.msar.core.registry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -45,10 +47,16 @@ public class MetaTypeService {
 		return (metaTypeRepo.findByName(type) != null);
 	}
 	
-	public List<String> getAllTypes(){
+	public List<String> getAllTypeNames(){
 		List<String> result = new ArrayList<>();
+		metaTypeRepo.findAll().forEach(e -> result.add(e.getName()));
+		return result;
+	}
+	
+	public Map<String, Object> getAllTypes(){
+		Map<String, Object> result = new HashMap<>();
 		metaTypeRepo.findAll().forEach(e -> {
-			if(!e.getType().equals(TYPE_META_SCHEMA)) result.add(e.getType());
+			if(!e.getName().equals(TYPE_META_SCHEMA)) result.put(e.getName(), JsonHelpers.readJsonToMap(e.getSchema()));
 			});
 		return result;
 	}

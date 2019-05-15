@@ -36,7 +36,7 @@ public class MetaType {
 		this.id = id;
 	}
 
-	public String getType() {
+	public String getName() {
 		return name;
 	}
 
