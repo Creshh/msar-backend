@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Field {
 
@@ -16,6 +18,7 @@ public class Field {
 	private String name;
 
 	@ManyToOne
+	@JsonBackReference
 	private MetaType type;
 	
 	public Field() {}
