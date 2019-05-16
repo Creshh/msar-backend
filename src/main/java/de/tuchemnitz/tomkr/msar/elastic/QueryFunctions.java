@@ -90,10 +90,10 @@ public class QueryFunctions {
 				.must(QueryBuilders.termQuery(FIELD_REFERENCE, reference))
 				.must(QueryBuilders.termQuery(FIELD_TYPE, type)), indices);
 		
-		if(results != null && !results.isEmpty()) {
+		if(results != null) {
 			return results;
 		} else {
-			return null;
+			return new ArrayList<Map<String,Object>>();
 		}
 	}
 
