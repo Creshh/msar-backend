@@ -24,6 +24,9 @@ import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDescriptor;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
 import de.tuchemnitz.tomkr.msar.Config;
@@ -59,7 +62,7 @@ public class TestDataGenerator {
 
 	private static final String API_CODE = "4qxzNF4J9p9Xm59X";
 
-	private static final String BASE_PATH = "D:\\test_img";
+	private static final String BASE_PATH = "D:\\test_img_src";
 
 	private static final String[] OBJECT_NAMES = new String[] {
 			"chair", "table", "bottle", "car", "plant", "laptop", "person", "bicycle"
@@ -69,6 +72,45 @@ public class TestDataGenerator {
 		return API_CODE.equals(apiCode);
 	}
 
+	
+	public void generateJsonFiles() throws JsonGenerationException, JsonMappingException, IOException {
+		String path = "D:\\test_img_src";
+//		String[] files = new String[] {
+//				"1A5A5092a_Jacob_Mueller_1.jpg",
+//				"2A5A3100aJM.jpg",
+//				"2A5A3147aJM.jpg",
+//				"2A5A3620aJM.jpg",
+//				"2A5A4806aJM.jpg"
+//		};
+		
+		List<MetaType> metaTypes = metaRepo.findAll();
+		for(MetaType metaType : metaTypes) {
+			if(!metaType.getName().equals(MetaTypeService.TYPE_META_SCHEMA)) {
+				metaRepo.delete(metaType);
+			}
+		}
+		
+		File base = new File(path);
+		Collection<File> files = FileUtils.listFiles(base, null, true);
+		
+		for (File file : files) {
+			
+			Map<String, Object> exif = readEXIF(file);
+			Map<String, Object> loc = generateLocation(file);
+			Map<String, Object> obj = generateObjects(file, (int) exif.get("xdim"), (int) exif.get("ydim"));
+
+			File resultFileExif = new File(path + "\\" + file.getName().split("\\.")[0] + "_exif.json");
+			File resultFileLoc = new File(path + "\\" + file.getName().split("\\.")[0] + "_location.json");
+			File resultFileObj = new File(path + "\\" + file.getName().split("\\.")[0] + "_object.json");
+			
+			new ObjectMapper().writeValue(resultFileExif, exif);
+			new ObjectMapper().writeValue(resultFileLoc, loc);
+			new ObjectMapper().writeValue(resultFileObj, obj);
+			
+		}
+		
+	}
+	
 	public void generateData() {
 		indexFunc.cleanIndex(config.getIndex());
 //		metaRepo.deleteAll();
