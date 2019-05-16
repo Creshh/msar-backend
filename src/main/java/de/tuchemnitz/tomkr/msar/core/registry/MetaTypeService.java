@@ -60,6 +60,16 @@ public class MetaTypeService {
 			});
 		return result;
 	}
+	
+//	public List<Map<String, Object>> getAllTypes(){
+//		List<Map<String, Object>> result = new ArrayList<>();
+//		metaTypeRepo.findAll().forEach(e -> {
+//			if (!e.getName().equals(TYPE_META_SCHEMA)) {
+//				result.add(JsonHelpers.readJsonToMap(e.getSchema()));
+//			}
+//		});
+//		return result;
+//	}
 
 	public List<String> getAllFields() {
 		List<String> result = new ArrayList<>();
