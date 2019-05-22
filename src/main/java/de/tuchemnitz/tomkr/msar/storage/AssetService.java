@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,9 @@ public class AssetService {
 
 	@Autowired
 	FileStorageService storageService;
+	
+	private final static String FILE_FORMAT = "%d.%s";
+	private final static String THUMB_FORMAT = "%s_t.%s";
 
 	public Asset storeFile(File file) {
 		// Normalize file name
@@ -81,7 +83,7 @@ public class AssetService {
 
 		assetRepo.save(asset);
 		
-		boolean success = storageService.storeFile(String.format("%d.%s", asset.getId(), type), file);
+		boolean success = storageService.storeFile(String.format(FILE_FORMAT, asset.getId(), type), file);
 		
 		if(!success) {
 			LOG.error("Couldn't store file!");
@@ -99,10 +101,10 @@ public class AssetService {
 	}
 	
 	private void createThumb(Asset asset, InputStream inputStream) {
-		String fileFormat = "%s/%s_t.%s";
+		
 		
 		try {
-			Thumbnails.of(inputStream).size(400, 400).toFile(String.format(fileFormat, config.getStorageBase(), asset.getId(), asset.getDataType()));
+			Thumbnails.of(inputStream).size(400, 400).toFile(String.format("%s/" + THUMB_FORMAT, config.getStorageBase(), asset.getId(), asset.getDataType()));
 		} catch (IOException e) {
 			LOG.error("Error creating and storing thumbnail!", e);
 		}
@@ -116,5 +118,18 @@ public class AssetService {
 		}
 		String fileFormat = thumb ? "%s_t.%s" : "%s.%s";
 		return storageService.loadFileAsResource(String.format(fileFormat, asset.getId(), asset.getDataType()));
+	}
+
+
+	public boolean removeFile(long id) {
+		Asset asset = assetRepo.getOne(id);
+		boolean success = true;
+		
+		success &= storageService.removeFile(String.format(FILE_FORMAT, asset.getId(), asset.getDataType()));
+		success &= storageService.removeFile(String.format(THUMB_FORMAT, asset.getId(), asset.getDataType()));
+		
+		assetRepo.delete(asset);
+		
+		return success;
 	}
 }

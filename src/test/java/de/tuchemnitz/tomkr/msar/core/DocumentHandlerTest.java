@@ -71,7 +71,7 @@ public class DocumentHandlerTest {
 			}
 		}
 		
-		schemaHandler.registerSchema("exif", json);
+		schemaHandler.registerSchema(json);
 	}
 
 	

@@ -36,7 +36,11 @@ public class MetaTypeService {
 
 	public Schema getSchema(String type) {
 		MetaType metaType = metaTypeRepo.findByName(type);
-		return SchemaLoader.load(JsonHelpers.loadJSON(metaType.getSchema()));
+		if(metaType != null && metaType.getSchema() != null) {
+			return SchemaLoader.load(JsonHelpers.loadJSON(metaType.getSchema()));
+		} else {
+			return null;
+		}
 	}
 	
 	public Schema getMetaSchema() {

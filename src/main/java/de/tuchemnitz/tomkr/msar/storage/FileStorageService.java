@@ -63,6 +63,18 @@ public class FileStorageService {
         }
         return true;
     }
+    
+    public boolean removeFile(String fileName) {
+        try {
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.deleteIfExists(targetLocation);
+        } catch (IOException ex) {
+            LOG.error("Could not delete file " + fileName + ". Please try again!", ex);
+            return false;
+        }
+        return true;
+    }
 	
     public boolean storeFile(String fileName, MultipartFile file) {
         try {

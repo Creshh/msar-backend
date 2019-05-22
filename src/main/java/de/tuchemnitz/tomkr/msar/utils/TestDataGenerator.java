@@ -121,9 +121,9 @@ public class TestDataGenerator {
 			}
 		}
 
-		schemaHandler.registerSchema("exif", Helpers.readResource("schema/exif.json"));
-		schemaHandler.registerSchema("location", Helpers.readResource("schema/location.json"));
-		schemaHandler.registerSchema("objects", Helpers.readResource("schema/objects.json"));
+		schemaHandler.registerSchema(Helpers.readResource("schema/exif.json"));
+		schemaHandler.registerSchema(Helpers.readResource("schema/location.json"));
+		schemaHandler.registerSchema(Helpers.readResource("schema/objects.json"));
 
 		File base = new File(BASE_PATH);
 		Collection<File> files = FileUtils.listFiles(base, null, true);
