@@ -1,9 +1,9 @@
 {
-	"$id": "https://tu-chemnitz.de/tomkr.meta.location",
+	"$id": "https://tu-chemnitz.de/tomkr.meta.tags",
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "location",
-	"description": "Location data in address and/or coordinate format",
-	"type": "object",
+	"title": "objects",
+	"description": "Tags in key value format; may be objects in scene",
+	"type": "bla",
 	"properties": {
 		"id": {
 			"description": "Automatically generated id",
@@ -25,48 +25,28 @@
 			"description": "Free text field for storing raw and additional data",
 			"type": "string"
 		},
-		"latitude": {
-			"type": "number"
-		},
-		"longitude": {
-			"type": "number"
-		},
-		"country": {
+		"objects": {
+			"type": "array",
 			"tag": true,
-			"type": "string"
+			"items": {
+				"type": "string"
+			}
 		},
-		"city": {
-			"tag": true,
-			"type": "string"
-		},
-		"street": {
-			"desc": true,
-			"type": "string"
-		},
-		"number": {
-			"type": "string"
+		"objects_coordinates": {
+			"type": "array",
+			"items": {
+				"type": "array",
+				"items": {
+					"type": "number"
+				}
+			}
 		}
 	},
 	"required": [
 		"reference",
 		"type",
-		"source"
-	],
-	"anyOf": [
-		{
-			"required": [
-				"latitude",
-				"longitude"
-			]
-		},
-		{
-			"required": [
-				"country",
-				"city",
-				"street",
-				"number"
-			]
-		}
+		"source",
+		"objects"
 	],
 	"additionalProperties": false
 }

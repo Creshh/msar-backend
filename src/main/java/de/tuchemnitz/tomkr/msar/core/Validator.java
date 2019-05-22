@@ -33,7 +33,7 @@ public class Validator {
 			System.out.println(e.toJSON().toString(4));
 
 			System.out.println("######################");
-			return new Result(false, e.getMessage());
+			return new Result(false, e.toJSON().toString(4));
 		}
 		return new Result(true, null);
 	}

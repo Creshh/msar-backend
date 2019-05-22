@@ -2,6 +2,7 @@ package de.tuchemnitz.tomkr.msar.core;
 
 import java.io.IOException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,8 @@ public class SchemaHandler {
 	@Autowired
 	private Validator validator;
 	
+	
+	private static final String TITLE = "title";
 	private static final String TYPE = "type";
 	private static final String PROPERTIES = "properties";
 	private static final String TAG = "tag";
@@ -54,22 +57,30 @@ public class SchemaHandler {
 	/**
 	 * 
 	 * 
-	 * @param type
 	 * @param schemaJSON
 	 * @return
 	 */
-	public boolean registerSchema(String type, String schemaJSON) {
+	public Result registerSchema(String schemaJSON) {
+		JSONObject schemaRoot = JsonHelpers.loadJSON(schemaJSON);
+		String type = null;
+		try{
+			type = schemaRoot.getString(TITLE);
+		} catch (JSONException e) {
+			LOG.error("No title defined in Schema!");
+			return new Result(false, "No title defined in Schema!");
+		}
+		
 		if (metaTypeService.contains(type)) {
 			LOG.error(String.format("Type [%s] already registered - abort registration.", type));
-			return false;
+			return new Result(false, String.format("Type [%s] already registered - abort registration.", type));
 		}
 
-		JSONObject schemaRoot = JsonHelpers.loadJSON(schemaJSON);
+		
 		Result validation = validator.checkDocument(metaTypeService.getMetaSchema(), schemaRoot);
 
 		if (!validation.isSuccess()) {
 			LOG.error("Given schema is not valid!");
-			return false;
+			return new Result(false, "Given schema is not valid! [" + validation.getMsg() + "]");
 		}
 
 		MetaType metaType = new MetaType();
@@ -86,7 +97,7 @@ public class SchemaHandler {
 				String dataType = dataTypeMapper.map(sourceType);
 				if(dataType == null) {
 					LOG.error(String.format("No TypeMapping for type [%s] found!", field.getString(TYPE)));
-					return false;
+					return new Result(false, String.format("No TypeMapping for type [%s] found!", field.getString(TYPE)));
 				}
 				
 				boolean searchable = field.has(TAG) ? field.getBoolean(TAG) : false;
@@ -100,12 +111,12 @@ public class SchemaHandler {
 			 mappingBuilder.applyMapping(config.getIndex(), config.getType());
 		} catch (IOException e) {
 			LOG.error("Error while creating mapping!", e);
-			return false;
+			return new Result(false, "Error while creating mapping!");
 		}
 		
 		metaTypeService.addType(metaType);
 		
-		return true;
+		return new Result(true, "Success");
 	}
 	
 	private String getSourceType(JSONObject field) {

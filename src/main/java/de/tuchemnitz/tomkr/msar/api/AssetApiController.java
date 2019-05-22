@@ -75,4 +75,11 @@ public class AssetApiController {
         }
         return builder.body(resource);
     }
+    
+    @GetMapping("/remove/{id}")
+    public boolean remove(@PathVariable long id, HttpServletRequest request) {
+        boolean success = assetService.removeFile(id);
+
+        return success;
+    }
 }
