@@ -11,11 +11,20 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Field {
 
+	public static final String DATA_RANGE = "range";
+	public static final String DATA_DATE = "date";
+	public static final String DATA_EXACT = "exact";
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
 	private String name;
+	
+	private boolean suggest;
+	
+	private String datatype;
 
 	@ManyToOne
 	@JsonBackReference
@@ -23,9 +32,11 @@ public class Field {
 	
 	public Field() {}
 	
-	public Field(String name, MetaType type) {
+	public Field(String name, MetaType type, boolean suggest, String datatype) {
 		this.name = name;
 		this.type = type;
+		this.suggest = suggest;
+		this.datatype = datatype;
 	}
 
 	public Integer getId() {
@@ -50,5 +61,21 @@ public class Field {
 
 	public void setType(MetaType type) {
 		this.type = type;
+	}
+
+	public boolean isSuggest() {
+		return suggest;
+	}
+
+	public void setSuggest(boolean suggest) {
+		this.suggest = suggest;
+	}
+
+	public String getDatatype() {
+		return datatype;
+	}
+
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
 	}
 }

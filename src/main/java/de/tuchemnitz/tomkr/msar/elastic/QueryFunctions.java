@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -27,6 +29,7 @@ import de.tuchemnitz.tomkr.msar.Config;
 import de.tuchemnitz.tomkr.msar.api.data.SuggestCategory;
 import de.tuchemnitz.tomkr.msar.api.data.SuggestItem;
 import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
+import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
 /**
  * Make Json Schema where fields which should be searched directly are annotated
@@ -57,6 +60,62 @@ public class QueryFunctions {
 	@Autowired
 	Client client;
 
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> searchMultiple(String queryJson){
+		
+		List<QueryBuilder> mustQueries = new ArrayList<>();
+		List<QueryBuilder> mustNotQueries = new ArrayList<>();
+		
+		Map<String, Object> query = JsonHelpers.readJsonToMap(queryJson);
+		for(Entry<String, Object> entry : query.entrySet()) {
+			String field = entry.getKey();
+			Map<String, Object> value = (Map<String, Object>) entry.getValue();
+			boolean must = (boolean) value.get("must");
+			String lower = (String) value.get("lower");
+			String upper = value.containsKey("upper") ? (String) value.get("upper") : null;
+			
+			QueryBuilder builder;
+			if(upper != null) {
+				builder = QueryBuilders.rangeQuery(field).from(lower, true).to(upper, true);
+			} else {
+				builder = QueryBuilders.matchQuery(field, lower);
+			}
+			
+			if(must) {
+				mustQueries.add(builder);
+			} else {
+				mustNotQueries.add(builder);
+			}
+			
+		}
+		
+		return searchBoolean(mustQueries, mustNotQueries);
+	}
+	
+	
+	private List<Map<String, Object>> searchBoolean(List<QueryBuilder> mustQuery, List<QueryBuilder> mustNotQuery, String... indices) {
+
+		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+		for(QueryBuilder q : mustQuery) {
+			boolQuery.must(q);
+		}
+		for(QueryBuilder q : mustNotQuery) {
+			boolQuery.mustNot(q);
+		}
+		
+		List<Map<String, Object>> results = new ArrayList<>();
+		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getType()})
+				.setQuery(boolQuery).get();
+		for (SearchHit hit : response.getHits()) {
+
+			Map<String, Object> result = hit.getSourceAsMap();
+			LOG.debug("> result: " + result.get(FIELD_REFERENCE) + " [" + hit.getId() + "]");
+			results.add(result);
+		}
+		return results;
+	}
+	
 	private List<Map<String, Object>> search(QueryBuilder queryBuilder, String... indices) {
 		List<Map<String, Object>> results = new ArrayList<>();
 		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getType()})
@@ -98,7 +157,7 @@ public class QueryFunctions {
 	}
 
 	public Map<String, SuggestCategory> getSuggestions(String value) {
-		return getSuggestions(value, typeService.getAllFields());
+		return getSuggestions(value, typeService.getSuggestFields());
 	}
 	
 	public Map<String, SuggestCategory> getSuggestions(String value, String field) {
@@ -142,44 +201,5 @@ public class QueryFunctions {
 		}
 		return result;
 	}
-	
-	public Map<String, Map<String, Object>> legacyGetSuggestions(String value, List<String> fields) {
-		
-		List<String> completionFields = new ArrayList<>();
-		for(String field : fields) {
-			completionFields.add(String.format("%s.completion", field));
-		}
-		
-		Map<String, Map<String, Object>> result = new HashMap<>();
 
-		SuggestBuilder builder = new SuggestBuilder();
-		for (String field : completionFields) {
-			CompletionSuggestionBuilder completionSuggestBuilder = SuggestBuilders.completionSuggestion(field);
-			completionSuggestBuilder.skipDuplicates(true); // when skipDuplicates = false, suggestions will be
-															// duplicated for example in case of arrays with multiple
-															// entries
-			completionSuggestBuilder.prefix(value, Fuzziness.AUTO);
-			builder.addSuggestion(String.format(SUGGEST_FORMAT, field), completionSuggestBuilder);
-		}
-
-		SearchResponse response = client.prepareSearch(config.getIndex()).setQuery(QueryBuilders.matchAllQuery())
-				.suggest(builder).execute().actionGet();
-		Suggest suggest = response.getSuggest();
-
-		for (String field : completionFields) {
-			CompletionSuggestion fieldSuggestion = suggest.getSuggestion(String.format(SUGGEST_FORMAT, field));
-			LOG.debug(String.format("Suggestion queried for [%s] in field [%s]", value, field));
-			for (CompletionSuggestion.Entry entry : fieldSuggestion.getEntries()) {
-				for (Option option : entry.getOptions()) {
-					String suggestion = option.getText().string();
-					Map<String, Object> doc = option.getHit().getSourceAsMap();
-					LOG.debug("> suggestion: " + suggestion + " for Doc: " + doc.get(FIELD_REFERENCE) + " ["
-							+ option.getHit().getId() + "]");
-
-					result.put(suggestion, doc);
-				}
-			}
-		}
-		return result;
-	}
 }

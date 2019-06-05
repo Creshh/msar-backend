@@ -6,4 +6,6 @@ import de.tuchemnitz.tomkr.msar.db.types.Field;
 
 public interface FieldRepository extends JpaRepository<Field, Integer>{
 
+	Iterable<Field> findAllBySuggest(boolean b);
+
 }
