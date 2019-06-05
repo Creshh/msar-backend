@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import de.tuchemnitz.tomkr.msar.db.FieldRepository;
 import de.tuchemnitz.tomkr.msar.db.MetaTypeRepository;
+import de.tuchemnitz.tomkr.msar.db.types.Field;
 import de.tuchemnitz.tomkr.msar.db.types.MetaType;
 import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
 
@@ -75,10 +76,14 @@ public class MetaTypeService {
 //		return result;
 //	}
 
-	public List<String> getAllFields() {
+	public List<String> getSuggestFields() {
 		List<String> result = new ArrayList<>();
-		fieldRepo.findAll().forEach(e -> result.add(e.getName()));
+		fieldRepo.findAllBySuggest(true).forEach(e -> result.add(e.getName()));
 		return result;
+	}
+	
+	public List<Field> getAllFields() {
+		return fieldRepo.findAll();
 	}
 
 	public void addType(MetaType metaType) {

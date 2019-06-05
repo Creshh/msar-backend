@@ -1,7 +1,7 @@
 {
 	"$id": "https://tu-chemnitz.de/tomkr.meta.tags",
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "Tags",
+	"title": "objects",
 	"description": "Tags in key value format; may be objects in scene",
 	"type": "object",
 	"properties": {
@@ -27,7 +27,8 @@
 		},
 		"objects": {
 			"type": "array",
-			"tag": true,
+			"searchType": "exact",
+			"suggest": true,
 			"items": {
 				"type": "string"
 			}

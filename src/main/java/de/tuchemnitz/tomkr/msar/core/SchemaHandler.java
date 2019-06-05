@@ -47,7 +47,8 @@ public class SchemaHandler {
 	private static final String TITLE = "title";
 	private static final String TYPE = "type";
 	private static final String PROPERTIES = "properties";
-	private static final String TAG = "tag";
+	private static final String SUGGEST = "suggest";
+	private static final String FIELD_TYPE = "searchType";
 	private static final String ARRAY = "array";
 	private static final String ITEMS = "items";
 	//private static final String FILTER = "filter"; // TODO: add "field" to schema and store it in db with datatype; add service to get all fields for frontend to build filters automatically
@@ -100,10 +101,11 @@ public class SchemaHandler {
 					return new Result(false, String.format("No TypeMapping for type [%s] found!", field.getString(TYPE)));
 				}
 				
-				boolean searchable = field.has(TAG) ? field.getBoolean(TAG) : false;
-				mappingBuilder.addField(key, dataType, searchable);
-				if(searchable) {
-					metaType.getFields().add(new Field(key, metaType));
+				boolean suggest = field.has(SUGGEST) ? field.getBoolean(SUGGEST) : false;
+				String fieldType = field.has(FIELD_TYPE) ? field.getString(FIELD_TYPE) : null;
+				mappingBuilder.addField(key, dataType, suggest);
+				if(fieldType != null) {
+					metaType.getFields().add(new Field(key, metaType, suggest, fieldType));
 				}
 			}
 

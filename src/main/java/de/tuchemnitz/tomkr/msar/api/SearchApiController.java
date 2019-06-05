@@ -48,4 +48,20 @@ public class SearchApiController {
 //		}
 		return queryFunctions.matchByRange(lower, upper, field);
 	}
+	/**
+	 * Request in json format:
+	 * field: {
+	 * 	must: true
+	 * 	lower: value
+	 * 	upper: value
+	 * }
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@GetMapping("/multiple")
+	public List<Map<String,Object>> searchMultiple(String request) {
+		return queryFunctions.searchMultiple(request);
+	}
+		
 }

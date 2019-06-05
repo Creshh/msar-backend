@@ -1,7 +1,7 @@
 {
 	"$id": "https://tu-chemnitz.de/tomkr.meta.exif",
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "EXIF",
+	"title": "exif",
 	"description": "EXIF image metadata",
 	"type": "object",
 	"properties": {
@@ -26,22 +26,27 @@
 			"type": "string"
 		},
 		"xdim": {
-			"type": "integer"
+			"type": "integer",
+			"searchType": "range"
 		},
 		"ydim": {
-			"type": "integer"
+			"type": "integer",
+			"searchType": "range"
 		},
 		"datetime": {
-			"type": "string"
+			"type": "string",
+			"searchType": "date"
 		},
 		"datetimeoriginal": {
 			"type": "string"
 		},
 		"manufacturer": {
-			"type": "string"
+			"type": "string",
+			"searchType": "exact"
 		},
 		"model": {
-			"type": "string"
+			"type": "string",
+			"searchType": "exact"
 		},
 		"lens": {
 			"type": "string"
