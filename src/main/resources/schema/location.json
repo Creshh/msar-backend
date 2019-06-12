@@ -48,7 +48,7 @@
 			"type": "string",
 			"searchType": "exact"
 		},
-		"number": {
+		"housenumber": {
 			"type": "string",
 			"searchType": "exact"
 		}
