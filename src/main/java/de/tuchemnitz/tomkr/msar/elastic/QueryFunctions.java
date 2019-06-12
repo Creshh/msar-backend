@@ -60,20 +60,31 @@ public class QueryFunctions {
 	@Autowired
 	Client client;
 
+	// workaround: do first query, get result ( if one ) and get references
+	// do multi query and add this references to all queries. -> will be "OR" query
+	// check if each query has at least one result for each reference
+	// -> add this reference to results --> will be "AND" query
 	
+	// -- or --
+	
+	// use nested documents
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> searchMultiple(String queryJson){
+		
+		
+//		List<String> references = new ArrayList<>();
 		
 		List<QueryBuilder> mustQueries = new ArrayList<>();
 		List<QueryBuilder> mustNotQueries = new ArrayList<>();
 		
 		Map<String, Object> query = JsonHelpers.readJsonToMap(queryJson);
 		for(Entry<String, Object> entry : query.entrySet()) {
-			String field = entry.getKey();
+//			String key = entry.getKey();
 			Map<String, Object> value = (Map<String, Object>) entry.getValue();
-			boolean must = (boolean) value.get("must");
+			String field = (String) value.get("field");
+			boolean must = (boolean) value.get("add");
 			String lower = (String) value.get("lower");
-			String upper = value.containsKey("upper") ? (String) value.get("upper") : null;
+			String upper = value.containsKey("upper") && !value.get("upper").equals("") ? (String) value.get("upper") : null;
 			
 			QueryBuilder builder;
 			if(upper != null) {
@@ -89,13 +100,16 @@ public class QueryFunctions {
 			}
 			
 		}
-		
 		return searchBoolean(mustQueries, mustNotQueries);
 	}
 	
 	
 	private List<Map<String, Object>> searchBoolean(List<QueryBuilder> mustQuery, List<QueryBuilder> mustNotQuery, String... indices) {
-
+		List<Map<String, Object>> results = new ArrayList<>();
+		
+		if(mustQuery.isEmpty() && mustNotQuery.isEmpty()) {
+			return results;
+		}
 		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 		for(QueryBuilder q : mustQuery) {
 			boolQuery.must(q);
@@ -104,7 +118,7 @@ public class QueryFunctions {
 			boolQuery.mustNot(q);
 		}
 		
-		List<Map<String, Object>> results = new ArrayList<>();
+		
 		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getType()})
 				.setQuery(boolQuery).get();
 		for (SearchHit hit : response.getHits()) {

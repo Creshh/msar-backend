@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,13 +56,20 @@ public class SearchApiController {
 	 * 	must: true
 	 * 	lower: value
 	 * 	upper: value
+	 * 
+	 * key: {
+	 *  field: name
+	 * 	add: true
+	 * 	lower: value
+	 * 	upper: value
+	 * 
 	 * }
 	 * 
 	 * @param request
 	 * @return
 	 */
-	@GetMapping("/multiple")
-	public List<Map<String,Object>> searchMultiple(String request) {
+	@PostMapping("/multiple")
+	public List<Map<String,Object>> searchMultiple(@RequestBody String request) {
 		return queryFunctions.searchMultiple(request);
 	}
 		
