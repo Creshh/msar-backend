@@ -69,20 +69,17 @@ public class QueryFunctions {
 	
 	// use nested documents
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> searchMultiple(String queryJson){
+	public List<Map<String, Object>> searchMultiple(String queryJson, String... indices){
 		
-		
-//		List<String> references = new ArrayList<>();
-		
-		List<QueryBuilder> mustQueries = new ArrayList<>();
-		List<QueryBuilder> mustNotQueries = new ArrayList<>();
-		
+		Map<String, List<Map<String, Object>>> results = new HashMap<>();
+
 		Map<String, Object> query = JsonHelpers.readJsonToMap(queryJson);
+		boolean first = true;
 		for(Entry<String, Object> entry : query.entrySet()) {
-//			String key = entry.getKey();
 			Map<String, Object> value = (Map<String, Object>) entry.getValue();
+			
+			boolean must = (boolean) value.get("add");			
 			String field = (String) value.get("field");
-			boolean must = (boolean) value.get("add");
 			String lower = (String) value.get("lower");
 			String upper = value.containsKey("upper") && !value.get("upper").equals("") ? (String) value.get("upper") : null;
 			
@@ -93,46 +90,43 @@ public class QueryFunctions {
 				builder = QueryBuilders.matchQuery(field, lower);
 			}
 			
+			BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 			if(must) {
-				mustQueries.add(builder);
+				boolQuery.must(builder);
 			} else {
-				mustNotQueries.add(builder);
+				boolQuery.must(QueryBuilders.existsQuery(field));
+				boolQuery.mustNot(builder);
 			}
 			
-		}
-		return searchBoolean(mustQueries, mustNotQueries);
-	}
-	
-	
-	private List<Map<String, Object>> searchBoolean(List<QueryBuilder> mustQuery, List<QueryBuilder> mustNotQuery, String... indices) {
-		List<Map<String, Object>> results = new ArrayList<>();
+			SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getIndex()}).setQuery(boolQuery).get();
+			List<String> currentReferences = new ArrayList<>();
 		
-		if(mustQuery.isEmpty() && mustNotQuery.isEmpty()) {
-			return results;
-		}
-		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-		for(QueryBuilder q : mustQuery) {
-			boolQuery.must(q);
-		}
-		for(QueryBuilder q : mustNotQuery) {
-			boolQuery.mustNot(q);
+			
+			for (SearchHit hit : response.getHits()) {
+				Map<String, Object> result = hit.getSourceAsMap();
+				String reference = (String) result.get(FIELD_REFERENCE);
+				if(first) {
+					results.put(reference, new ArrayList<>());
+					results.get(reference).add(result);
+				}
+				
+				currentReferences.add(reference);
+			}
+			
+			results.keySet().retainAll(currentReferences);
+			
+			if(results.isEmpty()) {
+				return new ArrayList<>();
+			}
+			first = false;
 		}
 		
-		
-		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getType()})
-				.setQuery(boolQuery).get();
-		for (SearchHit hit : response.getHits()) {
-
-			Map<String, Object> result = hit.getSourceAsMap();
-			LOG.debug("> result: " + result.get(FIELD_REFERENCE) + " [" + hit.getId() + "]");
-			results.add(result);
-		}
-		return results;
+		return results.values().stream().collect(ArrayList::new, List::addAll, List::addAll);
 	}
 	
 	private List<Map<String, Object>> search(QueryBuilder queryBuilder, String... indices) {
 		List<Map<String, Object>> results = new ArrayList<>();
-		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getType()})
+		SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getIndex()})
 				.setQuery(queryBuilder).get();
 		for (SearchHit hit : response.getHits()) {
 
