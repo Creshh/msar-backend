@@ -79,12 +79,14 @@ public class QueryFunctions {
 			Map<String, Object> value = (Map<String, Object>) entry.getValue();
 			
 			boolean must = (boolean) value.get("add");			
-			String field = (String) value.get("field");
 			String lower = (String) value.get("lower");
+			String field = (String) value.get("field");
 			String upper = value.containsKey("upper") && !value.get("upper").equals("") ? (String) value.get("upper") : null;
 			
 			QueryBuilder builder;
-			if(upper != null) {
+			if(field.equals("query")) {
+				builder = QueryBuilders.queryStringQuery(lower);
+			} else if(upper != null) {
 				builder = QueryBuilders.rangeQuery(field).from(lower, true).to(upper, true);
 			} else {
 				builder = QueryBuilders.matchQuery(field, lower);
