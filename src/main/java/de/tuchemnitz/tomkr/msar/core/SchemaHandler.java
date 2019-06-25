@@ -51,7 +51,6 @@ public class SchemaHandler {
 	private static final String FIELD_TYPE = "searchType";
 	private static final String ARRAY = "array";
 	private static final String ITEMS = "items";
-	//private static final String FILTER = "filter"; // TODO: add "field" to schema and store it in db with datatype; add service to get all fields for frontend to build filters automatically
 
 	
 	
