@@ -3,8 +3,6 @@ package de.tuchemnitz.tomkr.msar.api;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +17,7 @@ import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 @RestController
 @RequestMapping("api/search")
 public class SearchApiController {
-	private static Logger LOG = LoggerFactory.getLogger(SearchApiController.class);
+	// private static Logger LOG = LoggerFactory.getLogger(SearchApiController.class);
 
 
 	@Autowired

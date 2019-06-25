@@ -18,8 +18,6 @@ public class MetaRetrievalApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MetaRetrievalApplication.class, args);
 		LOG.debug("Started Application");
-		
-		// TODO: ensure Index etc.. make startup function
 	}
 }
 
