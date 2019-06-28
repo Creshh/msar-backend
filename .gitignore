@@ -24,3 +24,5 @@
 /.nb-gradle/
 /build/
 /src/gen/java/
+/src/main/resources/public
+/src/main/resources/static

@@ -2,7 +2,6 @@ package de.tuchemnitz.tomkr.msar.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.core.SchemaHandler;
 import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
-import de.tuchemnitz.tomkr.msar.elastic.QueryFunctions;
 import de.tuchemnitz.tomkr.msar.utils.Result;
 import de.tuchemnitz.tomkr.msar.utils.TestDataGenerator;
 
@@ -65,8 +63,8 @@ public class DocumentApiController {
 	@PostMapping("/addDocument")
 	public ResponseEntity<String> addDocument(@RequestBody String document, String reference) {
 		LOG.debug(String.format("[/api/addDocument] for [%s]: \n%s\n------------------------", reference,  document));
-		Result result =  documentHandler.addDocument(document, reference);
-		
+		// Result result =  documentHandler.addDocument(document, reference);
+		documentHandler.addDocument(document, reference);
 		return new ResponseEntity<String>("", HttpStatus.OK); // TODO
 	}
 	
