@@ -1,10 +1,13 @@
 package de.tuchemnitz.tomkr.msar.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,11 +64,19 @@ public class Helpers {
 	}
 	
 	public static String readResource(String resource) {
-		try {
-			File file = ResourceUtils.getFile(String.format("classpath:%s", resource));
-			return readFile(file);
-		} catch (FileNotFoundException e) {
-			LOG.error(String.format("Error reading resource %s", resource), e);
+		// File file = ResourceUtils.getFile(String.format("classpath:%s", resource));
+		// return readFile(file);
+		InputStream in = Helpers.class.getResourceAsStream("/" + resource); 
+		if(in != null){
+			StringWriter writer = new StringWriter();
+			try {
+				IOUtils.copy(in, writer);
+				return writer.toString();
+			} catch (IOException e) {
+				LOG.error(String.format("Error reading resource %s", resource), e);
+			}
+		} else {
+			LOG.error(String.format("Error reading resource %s; not found", resource));
 		}
 		return null;
 	}
