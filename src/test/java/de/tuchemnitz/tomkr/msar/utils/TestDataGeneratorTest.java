@@ -28,9 +28,13 @@ public class TestDataGeneratorTest {
 		
 	}
 
-	
-	
 	@Test
+	public void cleanIndex() {
+		testDataGenerator.cleanIndex();
+	}
+	
+	
+//	@Test
 	public void generateLocalData() throws JsonGenerationException, JsonMappingException, IOException {
 		
 		testDataGenerator.generateJsonFiles();

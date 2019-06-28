@@ -72,6 +72,9 @@ public class TestDataGenerator {
 		return API_CODE.equals(apiCode);
 	}
 
+	public void cleanIndex() {
+		indexFunc.cleanIndex(config.getIndex());
+	}
 	
 	public void generateJsonFiles() throws JsonGenerationException, JsonMappingException, IOException {
 		String path = "D:\\test_img_src";

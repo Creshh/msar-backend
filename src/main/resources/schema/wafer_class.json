@@ -1,0 +1,37 @@
+{
+	"$id": "https://tu-chemnitz.de/tomkr.meta.tags",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "wafer_class",
+	"description": ".....",
+	"type": "object",
+	"properties": {
+		"id": {
+			"description": "Automatically generated id",
+			"type": "string"
+		},
+		"reference": {
+			"description": "Absolute path to the referred asset (image, video, etc.)",
+			"type": "string"
+		},
+		"type": {
+			"description": "Type of the included metadata values",
+			"type": "string"
+		},
+		"source": {
+			"description": "Source of the metadata values; e.g. framework name and version",
+			"type": "string"
+		},
+		"class": {
+			"type": "number",
+			"searchType": "range",
+			"suggest": true
+		}
+	},
+	"required": [
+		"reference",
+		"type",
+		"source",
+		"class"
+	],
+	"additionalProperties": false
+}
