@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 
 /**
- * maybe split data and register functions / should always be singleton bean;
- * maybe handle concurrent access of data fields
  *  
- * @author Kretzschmar
+ * @author Tom Kretzschmar
  *
  */
 @Service

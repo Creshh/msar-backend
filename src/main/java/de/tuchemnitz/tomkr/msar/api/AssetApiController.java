@@ -25,16 +25,30 @@ import de.tuchemnitz.tomkr.msar.api.data.UploadFileResponse;
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
 
+/**
+ * API Controller for asset / image handling.
+ * Provides API endpoints for create, retrieve and delete functionality of images. 
+ * 
+ * @author Tom Kretzschmar
+ *
+ */
 @RestController
 @RequestMapping("api/assets")
 public class AssetApiController {
 
 	private static Logger LOG = LoggerFactory.getLogger(AssetApiController.class);
 
+	/**
+	 * AssetService instance.
+	 */
     @Autowired
     private AssetService assetService;
 	
-//    @CrossOrigin(origins = "http://localhost:8080")
+    /**
+     * 
+     * @param file
+     * @return
+     */
     @PostMapping("/upload")
     public UploadFileResponse upload(@RequestParam("file") MultipartFile file) {
         Asset asset = assetService.storeFile(file);
@@ -48,6 +62,15 @@ public class AssetApiController {
                 file.getContentType(), file.getSize());
     }
     
+    /**
+     * Get an image or thumbnail for displaying or downloading.
+     * 
+     * @param id The id of the requested image.
+     * @param thumb Flag if the thumbnail should be loaded.
+     * @param dl Flag for the browser if the entity should be downloaded or displayed inline.
+     * @param request The HTTP servlet request information.
+     * @return The requested image.
+     */
     @GetMapping("/get/{id}")
     public ResponseEntity<Resource> get(@PathVariable long id, @RequestParam(name = "thumb", defaultValue = "false") boolean thumb, @RequestParam(name = "dl", defaultValue = "false") boolean dl, HttpServletRequest request) {
         // Load file as Resource
@@ -69,17 +92,21 @@ public class AssetApiController {
         BodyBuilder builder = ResponseEntity.ok();
         builder.contentType(MediaType.parseMediaType(contentType));
         if(dl) {
-        	builder.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\""); // download
+        	builder.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\""); // download image
         } else {
-        	builder.header(HttpHeaders.CONTENT_DISPOSITION, "inline"); // inline
+        	builder.header(HttpHeaders.CONTENT_DISPOSITION, "inline"); // display image in browser
         }
         return builder.body(resource);
     }
     
+    /**
+     * Remove image with given id from disk and database.
+     * 
+     * @param id The image id which should be deleted.
+     * @return success
+     */
     @GetMapping("/remove/{id}")
-    public boolean remove(@PathVariable long id, HttpServletRequest request) {
-        boolean success = assetService.removeFile(id);
-
-        return success;
+    public boolean remove(@PathVariable long id) {
+       return assetService.removeFile(id);
     }
 }

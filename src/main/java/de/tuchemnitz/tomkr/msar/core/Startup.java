@@ -12,30 +12,54 @@ import de.tuchemnitz.tomkr.msar.core.registry.MetaTypeService;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 import de.tuchemnitz.tomkr.msar.utils.Helpers;
 
+/**
+ * Startup class for ensuring the correct application environment.
+ * 
+ * @author Tom Kretzschmar
+ *
+ */
 @Service
 public class Startup {
 
 	private static Logger LOG = LoggerFactory.getLogger(Startup.class);
 	
+	/**
+	 * IndexFunctions instance.
+	 */
 	@Autowired
 	IndexFunctions indexFunctions;
 	
+	/**
+	 * MetaTypeService instance.
+	 */
 	@Autowired
 	MetaTypeService typeService;
 	
+	/**
+	 * Config instance.
+	 */
 	@Autowired
 	Config config;
 	
+	/**
+	 * Init function, gets called when the application is successfully started. 
+	 */
 	@EventListener(ApplicationReadyEvent.class)
 	private void startup() {
 		ensureIndex();
 		loadMetaSchema();
 	}
 	
+	/**
+	 * Ensure that the configured elasticsearch index is available.
+	 */
 	private void ensureIndex() {
 		indexFunctions.ensureIndex(config.getIndex());
 	}
 	
+	/**
+	 * Register meta schema from resource if not present.
+	 */
 	private void loadMetaSchema() {
 		String json = Helpers.readResource(config.getMetaSchemaRes());
 		

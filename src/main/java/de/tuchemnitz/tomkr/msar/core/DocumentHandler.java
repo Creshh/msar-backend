@@ -19,7 +19,8 @@ import de.tuchemnitz.tomkr.msar.utils.Result;
 
 /**
  * 
- * @author Kretzschmar
+ * 
+ * @author Tom Kretzschmar
  *
  */
 @Service

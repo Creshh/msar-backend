@@ -26,30 +26,56 @@ import de.tuchemnitz.tomkr.msar.db.types.Field;
 import de.tuchemnitz.tomkr.msar.utils.Result;
 
 
-
+/**
+ * API Controller for type and schema handling.
+ * Provides API endpoints for adding types, querying types and fields.
+ * 
+ * @author Tom Kretzschmar
+ *
+ */
 @RestController
 @RequestMapping("api/type")
 public class TypeApiController {
 	private static Logger LOG = LoggerFactory.getLogger(TypeApiController.class);
 
 
+	/**
+	 * SchemaHandler instance.
+	 */
 	@Autowired
-	SchemaHandler schemaHandler;
+	private SchemaHandler schemaHandler;
 	
+	/**
+	 * MetaTypeService instance.
+	 */
 	@Autowired
-	MetaTypeService metaTypeService;
+	private MetaTypeService metaTypeService;
 	
+	/**
+	 * 	Register new schema json
+	 * @param schema Json schema string.
+	 * @return success
+	 */
 	@PostMapping("/addString")
 	public boolean addType(@RequestBody String schema) {
-		LOG.debug(String.format("[/api/type/add]: [%s] \n------------------------\n%s\n------------------------", schema));
 		return schemaHandler.registerSchema(schema).isSuccess();
 	}
 
+	/**
+	 * Get all registered schema / types.
+	 * @return Map of type name to schema
+	 */
 	@GetMapping("/get")
 	public Map<String, Object> getTypes() {
 		return metaTypeService.getAllTypes();
 	}
 	
+	/**
+	 * Register new schema file / type.
+	 * 
+	 * @param file {@link MultipartFile}. Json schema file.
+	 * @return ResponseEntity with result message
+	 */
 	@PostMapping("/add")
 	public ResponseEntity<String> add(@RequestParam("file") MultipartFile file) {
 		LOG.debug(String.format("[/api/addDocument]: \n------------------------")); 
@@ -76,6 +102,10 @@ public class TypeApiController {
 		}
 	}
 	
+	/**
+	 * Get all registered metadata fields.
+	 * @return List of metadata fields. See {@link Field}.
+	 */
 	@GetMapping("/getFields")
 	public List<Field> getFields() {
 		return metaTypeService.getAllFields();

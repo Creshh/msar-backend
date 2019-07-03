@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 import de.tuchemnitz.tomkr.msar.utils.Result;
 
 /**
+ * Validation class used for validating json documents against json schema definitions.
  * 
- * @author Kretzschmar
+ * @author Tom Kretzschmar
  *
  */
 @Service
@@ -19,21 +20,24 @@ public class Validator {
 	
 	private static Logger LOG = LoggerFactory.getLogger(Validator.class);
 
-	
+	/**
+	 * Check given json document against a schema.
+	 * 
+	 * @param schema The schema to check against.
+	 * @param document The document which should be checked.
+	 * @return The {@link Result} which contains the problems if occurring.
+	 */
 	public Result checkDocument(Schema schema, JSONObject document) {
 		try {
 			schema.validate(document);
 		} catch (ValidationException e) {
-			LOG.error("ERROR VALIDATING JSON FILE" + e.getMessage());
-
-			e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(System.out::println);
-
-			System.out.println("######################");
-
-			System.out.println(e.toJSON().toString(4));
-
-			System.out.println("######################");
-			return new Result(false, e.toJSON().toString(4));
+			String errorMsg = "Error while validating json document: \n"
+								+ e.getMessage()
+								+ "\n---- Further information ----\n"
+								+ e.toJSON().toString(4)
+								+ "\n-----------------------------";
+			LOG.error(errorMsg);
+			return new Result(false, errorMsg);
 		}
 		return new Result(true, null);
 	}

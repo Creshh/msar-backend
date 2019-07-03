@@ -100,7 +100,7 @@ public class QueryFunctions {
 				boolQuery.mustNot(builder);
 			}
 			
-			SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getIndex()}).setQuery(boolQuery).get();
+			SearchResponse response = client.prepareSearch(indices != null ? indices : new String[] {config.getIndex()}).setQuery(boolQuery).setSize(config.getScrollSize()).get();
 			List<String> currentReferences = new ArrayList<>();
 		
 			
