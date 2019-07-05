@@ -21,7 +21,7 @@ import de.tuchemnitz.tomkr.msar.utils.JsonHelpers;
  * maybe handle concurrent access of data fields
  * 
  * 
- * @author Kretzschmar
+ * @author Tom Kretzschmar
  *
  */
 @Service
@@ -66,16 +66,6 @@ public class MetaTypeService {
 		return result;
 	}
 	
-//	public List<Map<String, Object>> getAllTypes(){
-//		List<Map<String, Object>> result = new ArrayList<>();
-//		metaTypeRepo.findAll().forEach(e -> {
-//			if (!e.getName().equals(TYPE_META_SCHEMA)) {
-//				result.add(JsonHelpers.readJsonToMap(e.getSchema()));
-//			}
-//		});
-//		return result;
-//	}
-
 	public List<String> getSuggestFields() {
 		List<String> result = new ArrayList<>();
 		fieldRepo.findAllBySuggest(true).forEach(e -> result.add(e.getName()));

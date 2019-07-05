@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import de.tuchemnitz.tomkr.msar.elastic.IndexFunctions;
 
 /**
- *  
+ * Builder class wrapping the elasticsearch {@link XContentBuilder} for generating and applying new mappings to the elasticsearch instance.  
+ * 
  * @author Tom Kretzschmar
  *
  */
@@ -25,16 +26,34 @@ public class MappingBuilder {
 	private static final String TYPE = "type";
 	private static final String COMPLETION = "completion";
 
+	/**
+	 * The elasticsearch builder instance.
+	 */
 	private XContentBuilder mappingBuilder;
 	
-	
-	public void startDocument() throws IOException {
+	/**
+	 * Start new elasticsearch mapping type.
+	 * 
+	 * @return The current MappingBuilder instance for further calls.
+	 * @throws IOException
+	 */
+	public MappingBuilder startDocument() throws IOException {
 		mappingBuilder = XContentFactory.jsonBuilder();
 		mappingBuilder.startObject();
 		mappingBuilder.startObject(PROPERTIES);
+		return this;
 	}
 
-	public void addField(String field, String dataType, boolean searcheable) throws IOException {
+	/**
+	 * Add new data field to the mapping.
+	 * 
+	 * @param field The field name.
+	 * @param dataType The datatype of the field.
+	 * @param searcheable Flag, if the field should be enabled for suggestion queries.
+	 * @return The current MappingBuilder instance for further calls.
+	 * @throws IOException
+	 */
+	public MappingBuilder addField(String field, String dataType, boolean searcheable) throws IOException {
 		mappingBuilder.startObject(field);
 		mappingBuilder.field(TYPE, dataType);
 		if (searcheable) {
@@ -45,12 +64,24 @@ public class MappingBuilder {
 			mappingBuilder.endObject();
 		}
 		mappingBuilder.endObject();
+		return this;
 	}
 
-	public void endDocument() throws IOException {
+	/**
+	 * End the elasticsearch mapping type.
+	 * @return The current MappingBuilder instance for further calls.
+	 * @throws IOException
+	 */
+	public MappingBuilder endDocument() throws IOException {
 		mappingBuilder.endObject().endObject();
+		return this;
 	}
 	
+	/**
+	 * Apply the generated mapping type and register it in the elasticsearch instance.
+	 * @param index The index, where the mapping should be registered in.
+	 * @param type The type, where the mapping should be registered in.
+	 */
 	public void applyMapping(String index, String type) {
 		indexService.createMapping(mappingBuilder, index, type);
 	}

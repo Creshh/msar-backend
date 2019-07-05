@@ -14,11 +14,23 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Utility class providing static helper methods for various tasks.
+ * 
+ * @author Tom Kretzschmar
+ *
+ */
 public class Helpers {
 
 	private static Logger LOG = LoggerFactory.getLogger(Helpers.class);
 
 	
+	/**
+	 * Load properties as {@link Properties} object from given resource file.
+	 * 
+	 * @param resourceName The resource file name. 
+	 * @return A Properties object representing the content of the resource file.
+	 */
 	public static Properties loadProperties(String resourceName){
 		Properties prop = new Properties();
 		try {
@@ -29,6 +41,12 @@ public class Helpers {
 		return prop;
 	}
 	
+	/**
+	 * Load properties as {@link Map} from given resource file.
+	 * 
+	 * @param resourceName The resource file name.
+	 * @return A Map representing the content of the resource file.
+	 */
 	public static Map<String, String> getPropertiesAsMap(String resourceName){
 		Properties prop = loadProperties(resourceName);
 		Map<String, String> result = new HashMap<>();
@@ -39,7 +57,13 @@ public class Helpers {
 		
 		return result;
 	}
-	
+
+	/**
+	 * Read file to string.
+	 * 
+	 * @param file The file object which should be read.
+	 * @return The string content of the file.
+	 */
 	public static String readFile(File file) {
 		InputStream is = null;
 		try {
@@ -58,7 +82,12 @@ public class Helpers {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Read resource file to string.
+	 * @param resource The resource file name.
+	 * @return The string content of the resource.
+	 */
 	public static String readResource(String resource) {
 		InputStream in = Helpers.class.getResourceAsStream("/" + resource); 
 		if(in != null){
