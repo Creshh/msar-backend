@@ -22,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.tuchemnitz.tomkr.msar.api.data.UploadFileResponse;
+import de.tuchemnitz.tomkr.msar.core.DocumentHandler;
 import de.tuchemnitz.tomkr.msar.db.types.Asset;
+import de.tuchemnitz.tomkr.msar.elastic.DocumentFunctions;
 import de.tuchemnitz.tomkr.msar.storage.AssetService;
 
 /**
@@ -43,6 +45,9 @@ public class AssetApiController {
 	 */
     @Autowired
     private AssetService assetService;
+    
+    @Autowired
+    private DocumentHandler documentHandler;
 	
     /**
      * 
@@ -101,12 +106,18 @@ public class AssetApiController {
     
     /**
      * Remove image with given id from disk and database.
+     * Also removes all documents belonging to that id.
      * 
      * @param id The image id which should be deleted.
      * @return success
      */
     @GetMapping("/remove/{id}")
-    public boolean remove(@PathVariable long id) {
-       return assetService.removeFile(id);
+    public boolean remove(@PathVariable long reference) {
+    	boolean success = true;
+    	success &= assetService.removeFile(reference);
+    	success &= documentHandler.removeDocument(reference);
+    	
+    	return success;
+    	
     }
 }

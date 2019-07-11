@@ -63,7 +63,7 @@ public class DocumentHandler {
 		Result validation = validator.checkDocument(schema, docObj);
 		if (!validation.isSuccess()) {
 			LOG.error("Validation failed!");
-			return new Result(false, "Validation failed: " + validation.getMsg()); // Todo: add "additional" to result and return it. "Show more" in message box; hide message box only when closed manually
+			return new Result(false, "Validation failed: " + validation.getMsg()); // TODO: add "additional" to result and return it. "Show more" in message box; hide message box only when closed manually
 		}
 
 		// check duplicate
@@ -85,8 +85,9 @@ public class DocumentHandler {
 		return new Result(true, null);
 	}
 
-	public boolean deleteDocument(String type, String reference) {
-//		docFunctions.deleteDocument();
+	public boolean removeDocument(long reference) {
+		List<String> docs = queryFunctions.getDocumentIds(String.valueOf(reference));
+		docFunctions.removeDocuments(docs);
 		return true;
 	}
 

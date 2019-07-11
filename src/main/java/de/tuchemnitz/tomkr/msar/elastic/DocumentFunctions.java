@@ -1,7 +1,12 @@
 package de.tuchemnitz.tomkr.msar.elastic;
 
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -32,5 +37,20 @@ public class DocumentFunctions {
 	public void indexDocument(Map<String, Object> doc, String index) {
 		IndexResponse response = client.prepareIndex(index, TYPE).setSource(doc).execute().actionGet();
 		LOG.debug(response.toString());
+	}
+
+	public boolean removeDocuments(List<String> docs) {
+		BulkRequestBuilder builder = client.prepareBulk();
+		for(String id : docs) {
+			builder.add(new DeleteRequest(INDEX, TYPE, id));
+		}
+		BulkResponse response = null;
+		try {
+			response = builder.execute().get();
+		} catch (InterruptedException | ExecutionException e) {
+			LOG.error("Error deleting documents", e);
+		}
+		LOG.debug(response.toString());
+		return true;
 	}
 }

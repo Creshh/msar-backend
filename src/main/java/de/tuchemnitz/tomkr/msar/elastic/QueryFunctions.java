@@ -154,10 +154,21 @@ public class QueryFunctions {
 		return search(QueryBuilders.queryStringQuery(value), indices);
 	}
 	
-	public List<Map<String, Object>> getDocuments(String reference, String type, String... indices){
+	public List<String> getDocumentIds(String reference){
+		List<String> results = new ArrayList<>();
+		SearchResponse response = client.prepareSearch(new String[] {config.getIndex()})
+				.setQuery(QueryBuilders.termQuery(FIELD_REFERENCE, reference)).get();
+		for (SearchHit hit : response.getHits()) {
+			results.add(hit.getId());
+			LOG.debug("> result: " + hit.getSourceAsMap().get(FIELD_REFERENCE) + " [" + hit.getId() + "]");
+		}
+		return results;
+	}
+	
+	public List<Map<String, Object>> getDocuments(String reference, String type){
 		List<Map<String, Object>> results = search(QueryBuilders.boolQuery()
 				.must(QueryBuilders.termQuery(FIELD_REFERENCE, reference))
-				.must(QueryBuilders.termQuery(FIELD_TYPE, type)), indices);
+				.must(QueryBuilders.termQuery(FIELD_TYPE, type)));
 		
 		if(results != null) {
 			return results;
