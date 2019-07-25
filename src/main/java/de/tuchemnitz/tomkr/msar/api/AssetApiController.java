@@ -111,7 +111,7 @@ public class AssetApiController {
      * @param id The image id which should be deleted.
      * @return success
      */
-    @GetMapping("/remove/{id}")
+    @GetMapping("/remove/{reference}")
     public boolean remove(@PathVariable long reference) {
     	boolean success = true;
     	success &= assetService.removeFile(reference);
