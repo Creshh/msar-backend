@@ -50,7 +50,7 @@ public class DocumentFunctions {
 		} catch (InterruptedException | ExecutionException e) {
 			LOG.error("Error deleting documents", e);
 		}
-		LOG.debug(response.toString());
+//		LOG.debug(response.toString());
 		return true;
 	}
 }

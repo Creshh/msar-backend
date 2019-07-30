@@ -1,8 +1,8 @@
 {
-	"$id": "https://tu-chemnitz.de/tomkr.meta.tags",
+	"$id": "https://tu-chemnitz.de/tomkr.meta.location",
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "objects",
-	"description": "Tags in key value format; may be objects in scene",
+	"title": "persons",
+	"description": "Person count",
 	"type": "object",
 	"properties": {
 		"id": {
@@ -25,28 +25,17 @@
 			"description": "Free text field for storing raw and additional data",
 			"type": "string"
 		},
-		"objects": {
-			"type": "array",
+		"persons": {
 			"suggest": true,
-			"items": {
-				"type": "string"
-			}
-		},
-		"objects_coordinates": {
-			"type": "array",
-			"items": {
-				"type": "array",
-				"items": {
-					"type": "number"
-				}
-			}
+			"searchtype": "range",
+			"type": "number"
 		}
 	},
 	"required": [
 		"reference",
 		"type",
 		"source",
-		"objects"
+		"persons"
 	],
 	"additionalProperties": false
 }
